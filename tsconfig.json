@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    /* Basic options */
+    "target": "ESNext",
+    "module": "ESNext",
+    "jsx": "preserve",
+    "lib": ["DOM", "ES2017"],
+    "baseUrl": ".",
+    "moduleResolution": "node",
+    "allowJs": true,
+    "noEmit": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "isolatedModules": true,
+    "sourceMap": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "types": ["node"],
+
+    /* Strict type checking */
+    "strict": true
+  },
+  "exclude": ["**/node_modules", "dist", ".next", "out", "**/__tests__"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "__mocks__"]
+}
