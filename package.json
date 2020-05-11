@@ -1,0 +1,8 @@
+{
+  "name": "disposable",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:anoriqq/disposable.git",
+  "author": "anoriqq <shota.yoshikawa@anoriqq.com>",
+  "license": "MIT"
+}
