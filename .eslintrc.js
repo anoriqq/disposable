@@ -2,6 +2,7 @@ module.exports = {
   env: {
     node: true,
     browser: true,
+    jest: true,
   },
   extends: [
     'airbnb',
@@ -11,6 +12,9 @@ module.exports = {
     'plugin:import/typescript',
     'plugin:prettier/recommended',
     'prettier/@typescript-eslint',
+    'plugin:jest/recommended',
+    'plugin:jest-dom/recommended',
+    'plugin:testing-library/react',
   ],
   overrides: [
     {
@@ -26,6 +30,17 @@ module.exports = {
     },
   },
   rules: {
+    'import/extensions': [
+      'error',
+      'ignorePackages',
+      {
+        ts: 'never',
+        tsx: 'never',
+        js: 'never',
+        jsx: 'never',
+        mjs: 'never',
+      },
+    ],
     'react/jsx-filename-extension': [
       1,
       { extensions: ['.js', '.jsx', '.ts', '.tsx'] },
