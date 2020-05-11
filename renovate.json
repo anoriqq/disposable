@@ -1,0 +1,3 @@
+{
+  "extends": ["github>anoriqq/renovate-config"]
+}
