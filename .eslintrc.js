@@ -45,5 +45,12 @@ module.exports = {
       1,
       { extensions: ['.js', '.jsx', '.ts', '.tsx'] },
     ],
+    'import/prefer-default-export': 0,
+    'spaced-comment': ['error', 'always', { markers: ['/'] }],
+    'no-empty-function': 0,
+    '@typescript-eslint/no-empty-function': [
+      'error',
+      { allow: ['arrowFunctions'] },
+    ],
   },
 };
