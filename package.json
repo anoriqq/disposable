@@ -20,9 +20,11 @@
     "body-parser": "1.19.0",
     "cross-env": "7.0.2",
     "express": "4.17.1",
+    "isomorphic-unfetch": "3.0.0",
     "next": "9.3.6",
     "react": "16.13.1",
-    "react-dom": "16.13.1"
+    "react-dom": "16.13.1",
+    "swr": "0.2.0"
   },
   "devDependencies": {
     "@babel/preset-typescript": "7.9.0",
@@ -62,7 +64,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "yarn type-check && lint-staged"
+      "pre-commit": "lint-staged"
     }
   },
   "lint-staged": {
@@ -71,6 +73,9 @@
     ],
     "*.{js,jsx,ts,tsx}": [
       "eslint --fix"
+    ],
+    "*.{ts,tsx}": [
+      "yarn type-check"
     ],
     "*.{json,css,md}": [
       "prettier --write"
