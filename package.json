@@ -5,6 +5,12 @@
   "repository": "git@github.com:anoriqq/disposable.git",
   "author": "anoriqq <shota.yoshikawa@anoriqq.com>",
   "license": "MIT",
+  "scripts": {
+    "dev": "nodemon",
+    "build": "next build && tsc --project ./server/tsconfig.json",
+    "start": "cross-env NODE_ENV=production node dist/index.js",
+    "type-check": "tsc --noEmit --pretty"
+  },
   "dependencies": {
     "body-parser": "1.19.0",
     "cross-env": "7.0.2",
