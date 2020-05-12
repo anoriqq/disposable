@@ -47,11 +47,16 @@ app.prepare().then(() => {
   if (!process.env.MONGODB_CONNECTION_STRING) {
     throw new Error('mongodb connection string is not specified');
   }
-  mongoose.connect(process.env.MONGODB_CONNECTION_STRING, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useFindAndModify: false,
-  });
+  mongoose
+    .connect(process.env.MONGODB_CONNECTION_STRING, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      useFindAndModify: false,
+    })
+    .then(() => {
+      // eslint-disable-next-line no-console
+      console.log(`> Successfully connected to Mongodb`);
+    });
 
   /* Setup passport */
   if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
