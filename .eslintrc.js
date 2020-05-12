@@ -52,5 +52,6 @@ module.exports = {
       'error',
       { allow: ['arrowFunctions'] },
     ],
+    'no-underscore-dangle': ['error', { allow: ['_id'] }],
   },
 };
