@@ -6,6 +6,7 @@ import cookieParser from 'cookie-parser';
 import session from 'express-session';
 import passport from 'passport';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
+import mongoose from 'mongoose';
 
 import { health } from './logics/health';
 
@@ -13,14 +14,44 @@ const port = process.env.PORT ? parseInt(process.env.PORT, 10) : 8000;
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
 const handle = app.getRequestHandler();
-
-interface User {
-  id: string;
+interface UserDocument extends mongoose.Document {
+  _id: number;
+  displayName: string;
+  accessToken: string;
 }
+const userSchema = new mongoose.Schema<UserDocument>({
+  _id: Number,
+  displayName: String,
+  accessToken: String,
+});
+const User = mongoose.model<UserDocument>('User', userSchema);
 
 app.prepare().then(() => {
   /* Create server */
   const server = express();
+
+  /* Setup express middleware */
+  server.use(express.json());
+  server.use(express.urlencoded({ extended: true }));
+  server.use(bodyParser.json());
+  server.use(cookieParser());
+  server.use(
+    session({
+      secret: process.env.SESSION_SECRET || 'anoriqq-disposable',
+      resave: true,
+      saveUninitialized: true,
+    }),
+  );
+
+  /* Setup mongoose */
+  if (!process.env.MONGODB_CONNECTION_STRING) {
+    throw new Error('mongodb connection string is not specified');
+  }
+  mongoose.connect(process.env.MONGODB_CONNECTION_STRING, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false,
+  });
 
   /* Setup passport */
   if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
@@ -34,32 +65,54 @@ app.prepare().then(() => {
         callbackURL: `http://localhost:${port}/auth/callback`,
       },
       (accessToken, refreshToken, profile, cb) => {
-        return cb(undefined, profile);
+        const uq = {
+          id: profile.id,
+          displayName: profile.displayName,
+          accessToken,
+        };
+        User.findByIdAndUpdate(profile.id, uq, (err, user) => {
+          return cb(err, user);
+        });
       },
     ),
   );
-  passport.serializeUser<User, User['id']>((user, done) => {
-    done(null, user.id);
+  passport.serializeUser<UserDocument, UserDocument['_id']>((user, done) => {
+    done(null, user._id);
   });
   passport.deserializeUser((id, done) => {
-    done(null, { id });
+    User.findById(id, (err, user) => done(null, user));
   });
   server.use(passport.initialize());
   server.use(passport.session());
-  server.get('/auth', passport.authenticate('google', { scope: ['profile'] }));
-  server.get('/auth/callback', passport.authenticate('google'), (req, res) => {
-    res.redirect('/');
-  });
-
-  /* Setup express middleware */
-  server.use(bodyParser.json());
-  server.use(cookieParser());
-  server.use(
-    session({ secret: process.env.SESSION_SECRET || 'anoriqq-disposable' }),
+  server.get(
+    '/auth',
+    passport.authenticate('google', {
+      scope: ['profile', 'https://www.googleapis.com/auth/cloud-platform'],
+    }),
+  );
+  server.get(
+    '/auth/callback',
+    passport.authenticate('google', {
+      successRedirect: '/',
+      failureRedirect: '/',
+    }),
   );
 
   /* Setup routings */
   server.get('/health', health);
+  server.get('/session', (req, res) => {
+    const s = {
+      ...(req.user && { user: req.user }),
+    };
+    return res.json(s);
+  });
+  server.get('/logout', (req, res) => {
+    if (!req.session) return res.end();
+    return req.session.destroy((err) => {
+      if (err) throw err;
+      return res.end();
+    });
+  });
   server.get('*', (req, res) => handle(req, res));
 
   /* Start server */
