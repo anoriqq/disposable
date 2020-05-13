@@ -36,7 +36,6 @@ app.prepare().then(() => {
         kind: 'express-session',
         dataset: new Firestore({
           projectId: process.env.PROJECT_ID,
-          keyFilename: './credentials/anoriqq-disposable-0a1bc3c6199b.json',
         }),
       }),
       secret: process.env.SESSION_SECRET || 'anoriqq-disposable',
