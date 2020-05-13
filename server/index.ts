@@ -20,6 +20,9 @@ app.prepare().then(() => {
   /* Create server */
   const server = express();
 
+  /* Setup express app */
+  server.set('trust proxy', true);
+
   /* Setup express middleware */
   server.use(express.json());
   server.use(express.urlencoded({ extended: true }));
