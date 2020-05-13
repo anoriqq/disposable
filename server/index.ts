@@ -8,23 +8,13 @@ import passport from 'passport';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import mongoose from 'mongoose';
 
+import { User, UserDocument } from './lib/db';
 import { health } from './logics/health';
 
 const port = process.env.PORT ? parseInt(process.env.PORT, 10) : 8000;
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
 const handle = app.getRequestHandler();
-interface UserDocument extends mongoose.Document {
-  _id: number;
-  displayName: string;
-  accessToken: string;
-}
-const userSchema = new mongoose.Schema<UserDocument>({
-  _id: Number,
-  displayName: String,
-  accessToken: String,
-});
-const User = mongoose.model<UserDocument>('User', userSchema);
 
 app.prepare().then(() => {
   /* Create server */
