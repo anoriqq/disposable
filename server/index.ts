@@ -60,7 +60,11 @@ app.prepare().then(() => {
       {
         clientID: process.env.GOOGLE_CLIENT_ID,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-        callbackURL: `http://localhost:${port}/auth/callback`,
+        callbackURL: `${
+          dev
+            ? `http://${process.env.PATH_PREFIX}:${port}`
+            : `https://${process.env.PATH_PREFIX}`
+        }/auth/callback`,
       },
       (accessToken, refreshToken, profile, cb) => {
         const uq = {
