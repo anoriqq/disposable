@@ -7,6 +7,8 @@ import session from 'express-session';
 import passport from 'passport';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import mongoose from 'mongoose';
+import { Firestore } from '@google-cloud/firestore';
+import { FirestoreStore } from '@google-cloud/connect-firestore';
 
 import { User, UserDocument } from './lib/db';
 import { health } from './logics/health';
@@ -30,8 +32,15 @@ app.prepare().then(() => {
   server.use(cookieParser());
   server.use(
     session({
+      store: new FirestoreStore({
+        kind: 'express-session',
+        dataset: new Firestore({
+          projectId: process.env.PROJECT_ID,
+          keyFilename: './credentials/anoriqq-disposable-0a1bc3c6199b.json',
+        }),
+      }),
       secret: process.env.SESSION_SECRET || 'anoriqq-disposable',
-      resave: true,
+      resave: false,
       saveUninitialized: true,
     }),
   );
@@ -72,9 +81,14 @@ app.prepare().then(() => {
           displayName: profile.displayName,
           accessToken,
         };
-        User.findByIdAndUpdate(profile.id, uq, (err, user) => {
-          return cb(err, user);
-        });
+        User.findByIdAndUpdate(
+          profile.id,
+          uq,
+          { upsert: true },
+          (err, user) => {
+            return cb(err, user);
+          },
+        );
       },
     ),
   );
