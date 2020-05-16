@@ -12,6 +12,15 @@ import { FirestoreStore } from '@google-cloud/connect-firestore';
 
 import { User, UserDocument } from './lib/db';
 import { health } from './logics/health';
+import { wrap } from './util';
+import { create } from './logics/create';
+import { deleteUser } from './logics/delete';
+
+declare module 'express' {
+  export interface Request {
+    user?: UserDocument;
+  }
+}
 
 const port = process.env.PORT ? parseInt(process.env.PORT, 10) : 8000;
 const dev = process.env.NODE_ENV !== 'production';
@@ -121,13 +130,34 @@ app.prepare().then(() => {
     };
     return res.json(s);
   });
-  server.get('/logout', (req, res) => {
+  server.get('/user/logout', (req, res) => {
     if (!req.session) return res.end();
     return req.session.destroy((err) => {
       if (err) throw err;
       return res.end();
     });
   });
+  server.get(
+    '/user/delete',
+    wrap(async (req, res) => {
+      if (!req.user) throw new Error('no user');
+      const userId = req.user.id;
+      if (!req.session) return res.end();
+      return req.session.destroy((err) => {
+        if (err) throw err;
+        deleteUser({ userId });
+        return res.end();
+      });
+    }),
+  );
+  server.get(
+    '/api/create',
+    wrap(async (req, res) => {
+      if (!req.user) throw new Error('no user');
+      const project = await create({ user: req.user });
+      return res.json(project);
+    }),
+  );
   server.get('*', (req, res) => handle(req, res));
 
   /* Start server */

@@ -1,22 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`renders homepage unchanged 1`] = `
-Array [
-  <a
-    href="/auth"
-  >
-    login
-  </a>,
-  <button
-    onClick={[Function]}
-    type="button"
-  >
-    logout
-  </button>,
-  <div>
-    <span>
-      guest
-    </span>
-  </div>,
-]
+<a
+  href="/auth"
+>
+  login
+</a>
 `;
