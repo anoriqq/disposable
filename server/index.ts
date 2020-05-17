@@ -120,6 +120,14 @@ app.prepare().then(() => {
   server.use(passport.session());
   server.get(
     '/auth',
+    // eslint-disable-next-line no-shadow
+    (req, res, next) => {
+      if (!req.session) return next();
+      return req.session.regenerate((err) => {
+        if (err) throw err;
+        return next();
+      });
+    },
     passport.authenticate('google', {
       scope: [
         'profile',
