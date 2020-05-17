@@ -38,6 +38,7 @@
     "passport-google-oauth20": "2.0.0",
     "react": "16.13.1",
     "react-dom": "16.13.1",
+    "reakit": "1.0.2",
     "swr": "0.2.0"
   },
   "devDependencies": {
