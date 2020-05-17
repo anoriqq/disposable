@@ -1,6 +1,7 @@
 import './lib/env';
 import next from 'next';
 import express from 'express';
+import helmet from 'helmet';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import session from 'express-session';
@@ -37,6 +38,7 @@ app.prepare().then(() => {
   /* Setup express middleware */
   server.use(express.json());
   server.use(express.urlencoded({ extended: true }));
+  server.use(helmet());
   server.use(bodyParser.json());
   server.use(cookieParser());
   server.use(
