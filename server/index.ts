@@ -59,6 +59,7 @@ app.prepare().then(() => {
         httpOnly: true,
         ...(!dev && { secure: true }),
         domain: process.env.PATH_PREFIX || 'localhost',
+        maxAge: 900000,
       },
     }),
   );
