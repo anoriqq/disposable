@@ -43,15 +43,23 @@ app.prepare().then(() => {
   server.use(cookieParser());
   server.use(
     session({
-      store: new FirestoreStore({
-        kind: 'express-session',
-        dataset: new Firestore({
-          projectId: process.env.PROJECT_ID,
+      ...(dev && {
+        store: new FirestoreStore({
+          kind: 'express-session',
+          dataset: new Firestore({
+            projectId: process.env.PROJECT_ID,
+          }),
         }),
       }),
+      name: 'sessionId',
       secret: process.env.SESSION_SECRET || 'anoriqq-disposable',
       resave: false,
       saveUninitialized: true,
+      cookie: {
+        httpOnly: true,
+        ...(!dev && { secure: true }),
+        domain: process.env.PATH_PREFIX || 'localhost',
+      },
     }),
   );
 
