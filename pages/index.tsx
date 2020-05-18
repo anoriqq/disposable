@@ -1,34 +1,42 @@
 import React, { useState } from 'react';
-import useSWR, { SWRConfig } from 'swr';
-import fetch from 'isomorphic-unfetch';
+import useSWR from 'swr';
 
-const fetcher = <T extends unknown>(key: any): Promise<T> => {
-  return fetch(key, { credentials: 'include' }).then((r) => r.json());
-};
+import type { SessionInfo, APIError } from '../server/index';
+
+import Layout from '../components/layout';
+import { fetcher } from '../lib/fetch';
 
 const useUser = () => {
-  return useSWR('/session');
+  return useSWR<SessionInfo, APIError>('/session', fetcher);
 };
 
-const useProject = () => {
-  return fetch('/api/create').then((r) => r.json());
-};
+/*
+ * Createに必要な情報
+ * - zone
+ * - machineType
+ * - imageFamily
+ * - diskSizeGb
+ * - sshPublicKey
+ */
 
-const Dashboard: React.FC = () => {
+const IndexPage: React.FC = () => {
   const { data: session, revalidate } = useUser();
-  const [project, updateProject] = useState<any>({});
+  const [project, updateProject] = useState<string>('');
 
   const createProject: React.MouseEventHandler = (e) => {
     e.preventDefault();
+    updateProject('creating');
     fetch('/api/create')
       .then((r) => {
         return r.json();
       })
-      .then(updateProject);
+      .then((v) => {
+        updateProject(JSON.stringify(v));
+      });
   };
 
   return (
-    <>
+    <Layout>
       {session?.user ? (
         <>
           {' '}
@@ -60,21 +68,13 @@ const Dashboard: React.FC = () => {
           <button type="button" onClick={createProject}>
             create
           </button>
-          <div>{JSON.stringify(project)}</div>
+          <div>{project}</div>
         </>
       ) : (
         <a href="/auth">login</a>
       )}
-    </>
+    </Layout>
   );
 };
-
-const IndexPage: React.FC = () => (
-  <>
-    <SWRConfig value={{ fetcher }}>
-      <Dashboard />
-    </SWRConfig>
-  </>
-);
 
 export default IndexPage;
