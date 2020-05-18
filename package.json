@@ -7,7 +7,7 @@
   "scripts": {
     "build": "yarn clean && next build && yarn build:server",
     "build:server": "tsc --project ./server/tsconfig.json",
-    "clean": "rimraf ./dist",
+    "clean": "rimraf ./dist ./.next",
     "deploy": "gcloud app deploy",
     "dev": "nodemon",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json}\"",
