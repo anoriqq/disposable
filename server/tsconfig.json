@@ -5,7 +5,12 @@
     "module": "CommonJS",
     "outDir": "../dist",
     "isolatedModules": false,
-    "noEmit": false
+    "noEmit": false,
+    "typeRoots": ["@types", "../node_modules/@types"],
+    "paths": {
+      "express": ["@types/express"],
+      "*": ["*"]
+    }
   },
   "include": ["./**/*.ts"]
 }

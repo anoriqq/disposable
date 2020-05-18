@@ -1,3 +1,5 @@
+/// <reference types="./@types/express" />
+
 import './lib/env';
 import next from 'next';
 import express from 'express';
@@ -17,10 +19,12 @@ import { wrap } from './util';
 import { create } from './logics/create';
 import { deleteUser } from './logics/delete';
 
-declare module 'express' {
-  export interface Request {
-    user?: UserDocument;
-  }
+export interface APIError {
+  code: number;
+}
+
+export interface SessionInfo {
+  user?: UserDocument;
 }
 
 const port = process.env.PORT ? parseInt(process.env.PORT, 10) : 8000;
@@ -153,10 +157,10 @@ app.prepare().then(() => {
   /* Setup routings */
   server.get('/health', health);
   server.get('/session', (req, res) => {
-    const s = {
+    const sessionInfo: SessionInfo = {
       ...(req.user && { user: req.user }),
     };
-    return res.json(s);
+    return res.json(sessionInfo);
   });
   server.get('/user/logout', (req, res) => {
     if (!req.session) return res.end();
@@ -169,7 +173,7 @@ app.prepare().then(() => {
     '/user/delete',
     wrap(async (req, res) => {
       if (!req.user) throw new Error('no user');
-      const userId = req.user.id;
+      const userId = req.user._id;
       if (!req.session) return res.end();
       return req.session.destroy((err) => {
         if (err) throw err;
