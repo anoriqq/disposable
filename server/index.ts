@@ -27,6 +27,25 @@ export interface SessionInfo {
   user?: UserDocument;
 }
 
+export interface InitData {
+  zone: {
+    region: string;
+    zone: string;
+  };
+  machineType: {
+    machineType: string;
+    machineName: string;
+  };
+  imageFamily: {
+    project: string;
+    family: string;
+  };
+  diskSizeGb: {
+    capacity: string;
+  };
+  sshPublicKey: string;
+}
+
 const port = process.env.PORT ? parseInt(process.env.PORT, 10) : 8000;
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
@@ -182,11 +201,12 @@ app.prepare().then(() => {
       });
     }),
   );
-  server.get(
+  server.post(
     '/api/create',
     wrap(async (req, res) => {
       if (!req.user) throw new Error('no user');
-      const project = await create({ user: req.user });
+      const initData = req.body;
+      const project = await create({ user: req.user, initData });
       return res.json(project);
     }),
   );

@@ -265,7 +265,6 @@ const getAddressWithRetry: GetAddressWithRetry = async ({
       address,
       oauth_token: accessToken,
     });
-    console.log({ addressInfo });
     if (addressInfo.status !== 'RESERVED') throw new Error();
     return addressInfo;
   } catch (err) {
@@ -329,6 +328,7 @@ type CreateInstance = (params: {
   imageProject: string; // @see https://cloud.google.com/compute/docs/images
   imageFamily: string;
   diskSizeGb: string;
+  sshPublicKey?: string;
   accessToken: string;
 }) => GaxiosPromise<compute_v1.Schema$Operation>;
 const createInstance: CreateInstance = async ({
@@ -339,6 +339,7 @@ const createInstance: CreateInstance = async ({
   imageProject,
   imageFamily,
   diskSizeGb,
+  sshPublicKey,
   accessToken,
 }) => {
   const addressName = `${projectId}-external`;
@@ -350,6 +351,10 @@ const createInstance: CreateInstance = async ({
     accessToken,
   });
   console.log({ addressInfo });
+
+  const sshPublicKeyName =
+    sshPublicKey?.match(/\s(?<key>\S+)(?=@)/)?.groups?.key ??
+    `${projectId}-ssh-public-key`;
 
   /* @see https://cloud.google.com/compute/docs/reference/rest/v1/instances/insert */
   return compute.instances.insert({
@@ -379,6 +384,16 @@ const createInstance: CreateInstance = async ({
           autoDelete: true,
         },
       ],
+      ...(sshPublicKey && {
+        metadata: {
+          items: [
+            {
+              key: 'ssh-keys',
+              value: `${sshPublicKeyName}:${sshPublicKey}`,
+            },
+          ],
+        },
+      }),
       shieldedInstanceConfig: {
         enableSecureBoot: true,
         enableVtpm: true,
@@ -416,12 +431,13 @@ const getInstanceWithRetry: GetInstanceWithRetry = async ({
       instance: instanceName,
       oauth_token: accessToken,
     });
+    console.log({ instance });
     if (instance.status !== 'RUNNING') {
       throw new Error(instance.statusMessage || '');
     }
     return instance;
   } catch (err) {
-    console.log(err);
+    console.log('retrying');
     await wait(3000);
     return getInstanceWithRetry({
       projectId,
@@ -435,6 +451,7 @@ const getInstanceWithRetry: GetInstanceWithRetry = async ({
 
 type Create = (params: {
   user: UserDocument;
+  initData: import('../index').InitData;
 }) => Promise<{
   project: cloudresourcemanager_v1.Schema$Project;
   instance: compute_v1.Schema$Instance;
@@ -442,7 +459,7 @@ type Create = (params: {
 /**
  * プロジェクトの作成からインスタンスの作成まで行う
  */
-export const create: Create = async ({ user }) => {
+export const create: Create = async ({ user, initData }) => {
   console.log({ user });
   const projectId = getProjectId({ userId: user._id });
   const projectName = 'disposable-project';
@@ -531,15 +548,6 @@ export const create: Create = async ({ user }) => {
     accessToken: user.accessToken,
   });
   if (!data.items) throw new Error();
-  // const instances = Object.keys(data.items)
-  //   .map((zone) => {
-  //     if (!data.items || !data.items[zone].instances) return;
-  //     // eslint-disable-next-line consistent-return
-  //     return { [zone]: data.items[zone] };
-  //   })
-  //   .filter((x): x is Required<{
-  //     [x: string]: compute_v1.Schema$InstancesScopedList;
-  //   }> => Boolean(x));
   const instances = Object.fromEntries<compute_v1.Schema$InstancesScopedList>(
     Object.entries(data.items)
       .map((zone) => {
@@ -554,14 +562,15 @@ export const create: Create = async ({ user }) => {
 
   /* インスタンスがなければ作成する */
   if (!Object.keys(instances).length) {
-    createInstance({
+    await createInstance({
       projectId,
-      region: 'us-west1',
-      zone: 'us-west1-b',
-      machineType: 'f1-micro',
-      imageProject: 'ubuntu-os-cloud',
-      imageFamily: 'ubuntu-1804-lts',
-      diskSizeGb: '10',
+      region: initData.zone.region,
+      zone: initData.zone.zone,
+      machineType: initData.machineType.machineName,
+      imageProject: initData.imageFamily.project,
+      imageFamily: initData.imageFamily.family,
+      diskSizeGb: initData.diskSizeGb.capacity,
+      ...(initData.sshPublicKey && { sshPublicKey: initData.sshPublicKey }),
       accessToken: user.accessToken,
     });
   }
