@@ -53,5 +53,9 @@ module.exports = {
       { allow: ['arrowFunctions'] },
     ],
     'no-underscore-dangle': ['error', { allow: ['_id'] }],
+    '@typescript-eslint/camelcase': [
+      'error',
+      { allow: ['oauth_token', 'cloudresourcemanager_v1'] },
+    ],
   },
 };
