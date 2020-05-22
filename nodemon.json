@@ -1,5 +1,6 @@
 {
   "watch": ["server"],
   "exec": "ts-node --project ./server/tsconfig.json server/index.ts",
-  "ext": "js ts"
+  "ext": "js ts",
+  "delay": "1000"
 }
