@@ -13,6 +13,8 @@
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json}\"",
     "gcp-build": "yarn build",
     "lint": "eslint --fix ./server ./pages",
+    "oax": "oax generate ./openapi.yaml -d ./server/@types/express",
+    "oax:watch": "yarn oax -w",
     "start": "cross-env NODE_ENV='production' node ./dist/index.js",
     "test": "jest",
     "test:ci": "jest --ci --coverage",
@@ -92,6 +94,7 @@
     "rimraf": "3.0.2",
     "ts-jest": "25.5.1",
     "ts-node": "8.10.1",
+    "typed-oax": "0.0.4",
     "typescript": "3.8.3",
     "url-loader": "4.1.0"
   },
