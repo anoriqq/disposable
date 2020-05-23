@@ -5,6 +5,51 @@ declare module "express-serve-static-core" {
     code: number;
     message: string;
   };
+  type Project = {
+    createTime?: string;
+    labels?: any;
+    lifecycleState?: string;
+    name?: string;
+    projectId?: string;
+    projectNumber?: string;
+  };
+  type Instance = {
+    cpuPlatform?: string;
+    creationTimestamp?: string;
+    description?: string;
+    disks?: {
+      autoDelete?: boolean;
+      boot?: boolean;
+      deviceName?: string;
+      diskSizeGb?: string;
+      interface?: string;
+      kind?: string;
+      mode?: string;
+      source?: string;
+      type?: string;
+    }[];
+    hostname?: string;
+    id?: string;
+    kind?: string;
+    labels?: any;
+    machineType?: string;
+    metadata?: {
+      items?: {
+        key?: string;
+        value?: string;
+      }[];
+    };
+    name?: string;
+    networkInterfaces?: {
+      name?: string;
+      network?: string;
+      networkIP?: string;
+      subnetwork?: string;
+    }[];
+    status?: string;
+    statusMessage?: string;
+    zone?: string;
+  };
   type _ResBody<
     M extends
       | "all"
@@ -106,7 +151,18 @@ declare module "express-serve-static-core" {
     ): T;
     <
       P extends Params = ParamsDictionary,
-      ResBody = _ResBody<Method, null, any, any, null, any>,
+      ResBody = _ResBody<
+        Method,
+        {
+          displayName?: string;
+          hasProject?: boolean;
+          hasInstance?: boolean;
+        },
+        any,
+        any,
+        null,
+        any
+      >,
       ReqBody = _ReqBody<Method, null, any, any, null, any>,
       ReqQuery = _ReqQuery<Method, null, ParsedQs, ParsedQs, null, ParsedQs>
     >(
@@ -142,16 +198,16 @@ declare module "express-serve-static-core" {
     ): T;
     <
       P extends Params = ParamsDictionary,
-      ResBody = _ResBody<
-        Method,
-        {
-          vm: string;
-        },
-        null,
-        any,
-        any,
-        any
-      >,
+      ResBody = _ResBody<Method, Project, Project, any, null, any>,
+      ReqBody = _ReqBody<Method, null, null, any, null, any>,
+      ReqQuery = _ReqQuery<Method, null, null, ParsedQs, null, ParsedQs>
+    >(
+      path: "/project",
+      ...handlers: Array<RequestHandler<P, ResBody, ReqBody, ReqQuery>>
+    ): T;
+    <
+      P extends Params = ParamsDictionary,
+      ResBody = _ResBody<Method, Instance, Instance, any, any, any>,
       ReqBody = _ReqBody<
         Method,
         null,
@@ -170,7 +226,7 @@ declare module "express-serve-static-core" {
       >,
       ReqQuery = _ReqQuery<Method, null, null, ParsedQs, ParsedQs, ParsedQs>
     >(
-      path: "/vm",
+      path: "/instance",
       ...handlers: Array<RequestHandler<P, ResBody, ReqBody, ReqQuery>>
     ): T;
     <
@@ -189,7 +245,7 @@ declare module "express-serve-static-core" {
       ReqBody = _ReqBody<Method, null, any, any, any, any>,
       ReqQuery = _ReqQuery<Method, null, ParsedQs, ParsedQs, ParsedQs, ParsedQs>
     >(
-      path: "/vm/zones",
+      path: "/instance/zones",
       ...handlers: Array<RequestHandler<P, ResBody, ReqBody, ReqQuery>>
     ): T;
   }

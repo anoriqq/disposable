@@ -23,7 +23,7 @@ components:
         implicit:
           authorizationUrl: http://localhost:8000/user/auth
           scopes:
-            access_vm: read and write access to VM
+            access_instance: read and write access to instance
   schemas:
     Error:
       required:
@@ -35,10 +35,100 @@ components:
           format: int32
         message:
           type: string
+    Project:
+      type: object
+      properties:
+        createTime:
+          type: string
+        labels:
+          type: object
+        lifecycleState:
+          type: string
+        name:
+          type: string
+        projectId:
+          type: string
+        projectNumber:
+          type: string
+    Instance:
+      type: object
+      properties:
+        cpuPlatform:
+          type: string
+        creationTimestamp:
+          type: string
+        description:
+          type: string
+        disks:
+          type: array
+          items:
+            type: object
+            properties:
+              autoDelete:
+                type: boolean
+              boot:
+                type: boolean
+              deviceName:
+                type: string
+              diskSizeGb:
+                type: string
+              interface:
+                type: string
+              kind:
+                type: string
+              mode:
+                type: string
+              source:
+                type: string
+              type:
+                type: string
+        hostname:
+          type: string
+        id:
+          type: string
+        kind:
+          type: string
+        labels:
+          type: object
+        machineType:
+          type: string
+        metadata:
+          type: object
+          properties:
+            items:
+              type: array
+              items:
+                type: object
+                properties:
+                  key:
+                    type: string
+                  value:
+                    type: string
+        name:
+          type: string
+        networkInterfaces:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              network:
+                type: string
+              networkIP:
+                type: string
+              subnetwork:
+                type: string
+        status:
+          type: string
+        statusMessage:
+          type: string
+        zone:
+          type: string
 
 security:
   - oauth:
-    - access_vm
+      - access_instance
 
 paths:
   /health:
@@ -59,6 +149,17 @@ paths:
       responses:
         '200':
           description: Return user status
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  displayName:
+                    type: string
+                  hasProject:
+                    type: boolean
+                  hasInstance:
+                    type: boolean
         '401':
           description: Require authentication
     delete:
@@ -103,6 +204,10 @@ paths:
       responses:
         '200':
           description: Get project
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
         '401':
           description: Require authentication
     post:
@@ -111,6 +216,10 @@ paths:
       responses:
         '200':
           description: Create project
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
         '401':
           description: Require authentication
     delete:
@@ -121,33 +230,28 @@ paths:
           description: Delete project
         '401':
           description: Require authentication
-  /vm:
+  /instance:
     get:
-      description: VM status
-      operationId: GetVMStatus
+      description: Instance status
+      operationId: getInstanceStatus
       security:
         - oAuthSample:
-          - access_vm
+            - access_instance
       responses:
         '200':
-          description: Return VM status
+          description: Return instance status
           content:
             application/json:
               schema:
-                type: object
-                required:
-                  - vm
-                properties:
-                  vm:
-                    type: string
+                $ref: '#/components/schemas/Instance'
         '401':
           description: Require authentication
     post:
-      description: Create VM
-      operationId: CreateVM
+      description: Create instance
+      operationId: createInstance
       security:
         - oAuthSample:
-          - access_vm
+            - access_instance
       requestBody:
         content:
           application/json:
@@ -179,15 +283,19 @@ paths:
       responses:
         '200':
           description: Successfully request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Instance'
         '401':
           description: Require authentication
-  /vm/zones:
+  /instance/zones:
     get:
       description: List zones
       operationId: listZones
       security:
         - oAuthSample:
-          - access_vm
+            - access_instance
       responses:
         '200':
           description: List zones

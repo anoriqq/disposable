@@ -23,7 +23,7 @@ import Layout from '../components/layout';
 import { fetcher } from '../lib/fetch';
 
 const useSession = (): responseInterface<SessionInfo, APIError> => {
-  return useSWR<SessionInfo, APIError>('/session', fetcher);
+  return useSWR<SessionInfo, APIError>('/user', fetcher);
 };
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -227,7 +227,7 @@ const IndexPage: React.FC = () => {
   const handleSubmit = (): void => {
     if (initDataValidator(initData)) {
       handleNext();
-      fetch('/api/create', {
+      fetch('/instance', {
         method: 'POST',
         body: JSON.stringify(initData),
         headers: { 'Content-Type': 'application/json' },
@@ -256,10 +256,24 @@ const IndexPage: React.FC = () => {
               logout
             </Button>
           </div>
+          <div>
+            <Button
+              className={classes.button}
+              type="button"
+              onClick={(e): void => {
+                e.preventDefault();
+                fetch('/instance/zones', { credentials: 'include' })
+                  .then((r) => r.json())
+                  .then(console.log);
+              }}
+            >
+              List Zones
+            </Button>
+          </div>
           <div className={classes.root}>
             <Stepper activeStep={activeStep} orientation="vertical">
-              <Step key="Configure VM Instance">
-                <StepLabel>Configure VM Instance</StepLabel>
+              <Step key="Configure Instance">
+                <StepLabel>Configure Instance</StepLabel>
                 <StepContent>
                   <Container>
                     <form>
@@ -470,7 +484,7 @@ const IndexPage: React.FC = () => {
                         onClick={handleSubmit}
                         className={classes.button}
                       >
-                        Create VM
+                        Create Instance
                       </Button>
                     </div>
                   </div>
@@ -484,7 +498,7 @@ const IndexPage: React.FC = () => {
           <Button
             onClick={(e): void => {
               e.preventDefault();
-              window.location.href = '/auth';
+              window.location.href = '/user/auth';
             }}
           >
             login
