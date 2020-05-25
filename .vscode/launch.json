@@ -6,14 +6,19 @@
       "type": "node",
       "request": "launch",
       "cwd": "${workspaceRoot}",
-      "runtimeArgs": ["--nolazy", "-r", "ts-node/register"],
+      "runtimeArgs": ["--nolazy", "-r", "ts-node/register", "--inspect=9229"],
       "args": ["${workspaceRoot}/server/index.ts"],
       "sourceMaps": true,
-      "protocol": "inspector",
+      "protocol": "auto",
       "restart": true,
+      "port": 9229,
       "console": "internalConsole",
       "internalConsoleOptions": "openOnFirstSessionStart",
-      "env": { "TS_NODE_PROJECT": "server/tsconfig.json" }
+      "env": { "TS_NODE_PROJECT": "server/tsconfig.json" },
+      "skipFiles": [
+        "${workspaceFolder}/node_modules/**/*.js",
+        "<node_internals>/**/*.js"
+      ]
     }
   ]
 }
