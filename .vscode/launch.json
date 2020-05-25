@@ -1,0 +1,19 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "nodemon",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${workspaceRoot}",
+      "runtimeArgs": ["--nolazy", "-r", "ts-node/register"],
+      "args": ["${workspaceRoot}/server/index.ts"],
+      "sourceMaps": true,
+      "protocol": "inspector",
+      "restart": true,
+      "console": "internalConsole",
+      "internalConsoleOptions": "openOnFirstSessionStart",
+      "env": { "TS_NODE_PROJECT": "server/tsconfig.json" }
+    }
+  ]
+}
