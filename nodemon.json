@@ -1,6 +1,10 @@
 {
-  "watch": ["server"],
-  "exec": "ts-node --project ./server/tsconfig.json server/index.ts",
+  "watch": ["server", "*.env"],
+  "exec": "yarn kill-port:node; ts-node --project ./server/tsconfig.json server/index.ts",
+  "events": {
+    "crash": "yarn kill-port:node; ts-node --project ./server/tsconfig.json server/index.ts"
+  },
   "ext": "js ts",
-  "delay": "1000"
+  "delay": "2000",
+  "verbose": true
 }
