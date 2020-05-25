@@ -17,6 +17,8 @@
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
     "types": ["node", "jest"],
+    "importHelpers": true,
+    "removeComments": true,
 
     /* Strict type checking */
     "strict": true

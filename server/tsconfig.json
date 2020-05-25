@@ -10,7 +10,9 @@
     "paths": {
       "express": ["@types/express"],
       "*": ["*"]
-    }
+    },
+    "importHelpers": true,
+    "removeComments": true
   },
   "include": ["./**/*.ts"]
 }
