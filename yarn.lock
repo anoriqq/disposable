@@ -5198,7 +5198,7 @@ gaxios@^3.0.0:
     is-stream "^2.0.0"
     node-fetch "^2.3.0"
 
-gce-images@^2.0.0:
+gce-images@2.1.4, gce-images@^2.0.0:
   version "2.1.4"
   resolved "https://registry.yarnpkg.com/gce-images/-/gce-images-2.1.4.tgz#00ff010797a949657266836877d9ff372f75f42a"
   integrity sha512-5UQUotsEXJvllt0P+rh4V69ORuAoYIgMixKfmDx6qfyMASD/XCnal1Isak1GXi65k4KlYcUUemGGwttt3e80rg==
