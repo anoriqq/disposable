@@ -55,7 +55,21 @@ module.exports = {
     'no-underscore-dangle': ['error', { allow: ['_id'] }],
     '@typescript-eslint/camelcase': [
       'error',
-      { allow: ['oauth_token', 'access_token', 'cloudresourcemanager_v1'] },
+      {
+        allow: [
+          'oauth_token',
+          'access_token',
+          'cloudresourcemanager_v1',
+          'serviceusage_v1beta1',
+          'cloudbilling_v1',
+          'compute_v1',
+        ],
+      },
     ],
+    'import/no-unresolved': [
+      'error',
+      { ignore: ['express-serve-static-core'] },
+    ],
+    'react/prop-types': 0,
   },
 };
