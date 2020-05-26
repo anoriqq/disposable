@@ -1,69 +1,37 @@
 /// <reference types="./@types/express" />
+/// <reference types="./@types/express/express" />
 
+import type { Express, APIError } from 'express-serve-static-core';
 import './lib/env';
 import next from 'next';
-import express from 'express';
+import express, { ErrorRequestHandler } from 'express';
 import helmet from 'helmet';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import session from 'express-session';
 import passport from 'passport';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
-import mongoose from 'mongoose';
 import { Firestore } from '@google-cloud/firestore';
 import { FirestoreStore } from '@google-cloud/connect-firestore';
 
-import { User, UserDocument } from './lib/db';
-import { health } from './logics/health';
-import { wrap } from './util';
-import { create } from './logics/create';
-import { deleteUser } from './logics/delete';
-
-export interface APIError {
-  code: number;
-}
-
-export interface SessionInfo {
-  user?: UserDocument;
-}
-
-export interface InitData {
-  zone: {
-    region: string;
-    zone: string;
-  };
-  machineType: {
-    machineType: string;
-    machineName: string;
-  };
-  imageFamily: {
-    project: string;
-    family: string;
-  };
-  diskSizeGb: {
-    capacity: string;
-  };
-  sshPublicKey: string;
-}
+import type { UserDocument } from './lib/db';
+import { setupMongoose, User } from './lib/db';
+import {
+  healthRouter,
+  userRouter,
+  projectRouter,
+  instanceRouter,
+} from './route';
 
 const port = process.env.PORT ? parseInt(process.env.PORT, 10) : 8000;
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
 const handle = app.getRequestHandler();
 
-app.prepare().then(() => {
-  /* Create server */
-  const server = express();
-
-  /* Setup express app */
-  server.set('trust proxy', true);
-
-  /* Setup express middleware */
-  server.use(express.json());
-  server.use(express.urlencoded({ extended: true }));
-  server.use(helmet());
-  server.use(bodyParser.json());
-  server.use(cookieParser());
+const setupPassport = (server: Express): void => {
+  if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
+    throw new Error('client ID or client secret is not specified');
+  }
   server.use(
     session({
       ...(dev && {
@@ -86,36 +54,15 @@ app.prepare().then(() => {
       },
     }),
   );
-
-  /* Setup mongoose */
-  if (!process.env.MONGODB_CONNECTION_STRING) {
-    throw new Error('mongodb connection string is not specified');
-  }
-  mongoose
-    .connect(process.env.MONGODB_CONNECTION_STRING, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      useFindAndModify: false,
-    })
-    .then(() => {
-      // eslint-disable-next-line no-console
-      console.log(`> Successfully connected to Mongodb`);
-    });
-
-  /* Setup passport */
-  if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
-    throw new Error('client ID or client secret is not specified');
-  }
+  const callbackPath = '/user/auth/callback';
   passport.use(
     new GoogleStrategy(
       {
         clientID: process.env.GOOGLE_CLIENT_ID,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-        callbackURL: `${
-          dev
-            ? `http://${process.env.PATH_PREFIX}:${port}`
-            : `https://${process.env.PATH_PREFIX}`
-        }/auth/callback`,
+        callbackURL: dev
+          ? `http://${process.env.PATH_PREFIX}:${port}${callbackPath}`
+          : `https://${process.env.PATH_PREFIX}${callbackPath}`,
       },
       (accessToken, refreshToken, profile, cb) => {
         const uq = {
@@ -142,75 +89,49 @@ app.prepare().then(() => {
   });
   server.use(passport.initialize());
   server.use(passport.session());
-  server.get(
-    '/auth',
-    // eslint-disable-next-line no-shadow
-    (req, res, next) => {
-      if (!req.session) return next();
-      return req.session.regenerate((err) => {
-        if (err) throw err;
-        return next();
-      });
-    },
-    passport.authenticate('google', {
-      scope: [
-        'profile',
-        'https://www.googleapis.com/auth/cloud-platform',
-        // 'https://www.googleapis.com/auth/cloudplatformprojects',
-        // 'https://www.googleapis.com/auth/cloud-billing',
-        // 'https://www.googleapis.com/auth/cloud-platform.read-only',
-        // 'https://www.googleapis.com/auth/service.management',
-        // 'https://www.googleapis.com/auth/compute',
-        // 'https://www.googleapis.com/auth/devstorage.full_control',
-      ],
-    }),
-  );
-  server.get(
-    '/auth/callback',
-    passport.authenticate('google', {
-      successRedirect: '/',
-      failureRedirect: '/',
-    }),
-  );
+};
+
+app.prepare().then(() => {
+  /* Create server */
+  const server = express();
+
+  /* Setup express app */
+  server.set('trust proxy', true);
+
+  /* Setup express middleware */
+  server.use(express.json());
+  server.use(express.urlencoded({ extended: true }));
+  server.use(helmet());
+  server.use(bodyParser.json());
+  server.use(cookieParser());
+
+  /* Setup mongoose */
+  setupMongoose();
+
+  /* Setup passport */
+  setupPassport(server);
 
   /* Setup routings */
-  server.get('/health', health);
-  server.get('/session', (req, res) => {
-    const sessionInfo: SessionInfo = {
-      ...(req.user && { user: req.user }),
-    };
-    return res.json(sessionInfo);
-  });
-  server.get('/user/logout', (req, res) => {
-    if (!req.session) return res.end();
-    return req.session.destroy((err) => {
-      if (err) throw err;
-      return res.end();
-    });
-  });
-  server.get(
-    '/user/delete',
-    wrap(async (req, res) => {
-      if (!req.user) throw new Error('no user');
-      const userId = req.user._id;
-      if (!req.session) return res.end();
-      return req.session.destroy((err) => {
-        if (err) throw err;
-        deleteUser({ userId });
-        return res.end();
-      });
-    }),
-  );
-  server.post(
-    '/api/create',
-    wrap(async (req, res) => {
-      if (!req.user) throw new Error('no user');
-      const initData = req.body;
-      const project = await create({ user: req.user, initData });
-      return res.json(project);
-    }),
-  );
-  server.get('*', (req, res) => handle(req, res));
+  server.use(healthRouter);
+  server.use(userRouter);
+  server.use(projectRouter);
+  server.use(instanceRouter);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const errorHandler: ErrorRequestHandler<any, APIError> = (
+    err,
+    req,
+    res,
+    nextFn,
+  ): void => {
+    if (err.message === 'no user') {
+      res.status(401).json({ code: 401, message: 'No user' });
+      return;
+    }
+    console.error(err);
+    nextFn(err);
+  };
+  server.use(errorHandler);
+  server.all('*', (req, res) => handle(req, res));
 
   /* Start server */
   server.listen(port, (err) => {
