@@ -34,7 +34,7 @@ const setupPassport = (server: Express): void => {
   }
   server.use(
     session({
-      ...(dev && {
+      ...(!dev && {
         store: new FirestoreStore({
           kind: 'express-session',
           dataset: new Firestore({
