@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Global, css } from '@emotion/core';
 import styled from '@emotion/styled';
 import 'typeface-roboto';
@@ -14,7 +13,7 @@ const globalStyles = css`
 
 const Container = styled.div({
   margin: '2rem auto',
-  maxWidth: '700px',
+  maxWidth: '900px',
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
@@ -27,9 +26,5 @@ const Layout: React.FC = ({ children }) => (
     <Container>{children}</Container>
   </>
 );
-
-Layout.propTypes = {
-  children: PropTypes.node.isRequired,
-};
 
 export default Layout;
