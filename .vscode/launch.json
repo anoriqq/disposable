@@ -13,7 +13,7 @@
       "restart": true,
       "port": 9229,
       "console": "internalConsole",
-      "internalConsoleOptions": "openOnFirstSessionStart",
+      "internalConsoleOptions": "openOnSessionStart",
       "env": { "TS_NODE_PROJECT": "server/tsconfig.json" },
       "skipFiles": [
         "${workspaceFolder}/node_modules/**/*.js",
