@@ -1,0 +1,24 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "nodemon",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${workspaceRoot}",
+      "runtimeArgs": ["--nolazy", "-r", "ts-node/register", "--inspect=9229"],
+      "args": ["${workspaceRoot}/server/index.ts"],
+      "sourceMaps": true,
+      "protocol": "auto",
+      "restart": true,
+      "port": 9229,
+      "console": "internalConsole",
+      "internalConsoleOptions": "openOnSessionStart",
+      "env": { "TS_NODE_PROJECT": "server/tsconfig.json" },
+      "skipFiles": [
+        "${workspaceFolder}/node_modules/**/*.js",
+        "<node_internals>/**/*.js"
+      ]
+    }
+  ]
+}

@@ -1,10 +1,10 @@
 {
   "compilerOptions": {
     /* Basic options */
-    "target": "ESNext",
+    "target": "ES2018",
     "module": "ESNext",
     "jsx": "preserve",
-    "lib": ["DOM", "ES2017"],
+    "lib": ["DOM", "ESNext"],
     "baseUrl": ".",
     "moduleResolution": "node",
     "allowJs": true,
@@ -16,7 +16,9 @@
     "sourceMap": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
-    "types": ["node"],
+    "types": ["node", "jest"],
+    "importHelpers": true,
+    "removeComments": true,
 
     /* Strict type checking */
     "strict": true

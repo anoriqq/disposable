@@ -1,0 +1,461 @@
+openapi: 3.0.0
+info:
+  title: Disposable
+  description: Disposable GCE easily
+  version: 1.0.0
+  contact:
+    name: Shota Yoshikawa
+    email: shota.yoshiakwa@anoriqq.com
+  license:
+    name: MIT
+    url: https://github.com/anoriqq/disposable/blob/master/LICENSE
+servers:
+  - url: 'http://127.0.0.1:8000'
+    description: Development server
+  - url: 'https://disposable.anoriqq.com'
+    description: Production server
+components:
+  schemas:
+    APIError:
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+    Project:
+      type: object
+      properties:
+        createTime:
+          type: string
+        labels:
+          type: object
+        lifecycleState:
+          type: string
+        name:
+          type: string
+        projectId:
+          type: string
+        projectNumber:
+          type: string
+    Instance:
+      type: object
+      properties:
+        cpuPlatform:
+          type: string
+        creationTimestamp:
+          type: string
+        description:
+          type: string
+        disks:
+          type: array
+          items:
+            type: object
+            properties:
+              autoDelete:
+                type: boolean
+              boot:
+                type: boolean
+              deviceName:
+                type: string
+              diskSizeGb:
+                type: string
+              interface:
+                type: string
+              kind:
+                type: string
+              mode:
+                type: string
+              source:
+                type: string
+              type:
+                type: string
+        hostname:
+          type: string
+        id:
+          type: string
+        kind:
+          type: string
+        labels:
+          type: object
+        machineType:
+          type: string
+        metadata:
+          type: object
+          properties:
+            items:
+              type: array
+              items:
+                type: object
+                properties:
+                  key:
+                    type: string
+                  value:
+                    type: string
+        name:
+          type: string
+        networkInterfaces:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              network:
+                type: string
+              networkIP:
+                type: string
+              subnetwork:
+                type: string
+              accessConfigs:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    natIP:
+                      type: string
+                    publicPtrDomainName:
+                      type: string
+        status:
+          type: string
+        statusMessage:
+          type: string
+        zone:
+          type: string
+    UserInfo:
+      type: object
+      properties:
+        displayName:
+          type: string
+        projectLifecycleState:
+          type: string
+        instanceId:
+          type: string
+    MachineProfile:
+      type: object
+      required:
+        - region
+        - zone
+        - machineType
+        - imageProject
+        - imageFamily
+        - diskSizeGb
+      properties:
+        region:
+          type: string
+        zone:
+          type: string
+        machineType:
+          type: string
+        imageProject:
+          type: string
+        imageFamily:
+          type: string
+        diskSizeGb:
+          type: string
+        sshPublicKey:
+          type: string
+    Zones:
+      type: array
+      items:
+        type: object
+        required:
+          - name
+          - region
+        properties:
+          name:
+            type: string
+          region:
+            type: string
+    MachineTypes:
+      type: array
+      items:
+        type: object
+        required:
+          - name
+        properties:
+          name:
+            type: string
+    Images:
+      type: array
+      items:
+        type: object
+        required:
+          - project
+          - family
+        properties:
+          project:
+            type: string
+          family:
+            type: string
+
+paths:
+  /health:
+    get:
+      description: Health check
+      operationId: healthCheck
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: string
+  /user:
+    get:
+      description: User Status
+      operationId: GetUserStatus
+      responses:
+        '200':
+          description: Return user status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserInfo'
+        '401':
+          description: Require authentication
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+    delete:
+      description: Delete user
+      operationId: deleteUser
+      responses:
+        '200':
+          description: Successfully deleted user
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Require authentication
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+  /user/logout:
+    get:
+      description: Logout from current user
+      operationId: logoutUser
+      responses:
+        '200':
+          description: Successfully logged out
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Require authentication
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+  /user/auth:
+    get:
+      description: Authenticate user with Google OAuth2.0
+      operationId: authUser
+      responses:
+        '200':
+          description: Redirect to accounts.google.com
+          content:
+            application/json:
+              schema:
+                type: object
+        '302':
+          description: Redirect to accounts.google.com
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+  /user/auth/callback:
+    get:
+      description: Authenticate user with Google OAuth2.0
+      operationId: authUserCallback
+      responses:
+        '200':
+          description: Redirect to accounts.google.com
+          content:
+            application/json:
+              schema:
+                type: object
+        '302':
+          description: Redirect to Disposable app
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+  /project:
+    get:
+      description: Get project
+      operationId: getProject
+      responses:
+        '200':
+          description: Get project
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+        '401':
+          description: Require authentication
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+    post:
+      description: Create project
+      operationId: createProject
+      responses:
+        '200':
+          description: Create project
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+        '401':
+          description: Require authentication
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+    delete:
+      description: Delete project
+      operationId: deleteProject
+      responses:
+        '200':
+          description: Delete project
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Require authentication
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+  /instance:
+    get:
+      description: Instance status
+      operationId: getInstanceStatus
+      responses:
+        '200':
+          description: Return instance status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Instance'
+        '401':
+          description: Require authentication
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+    post:
+      description: Create instance
+      operationId: createInstance
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MachineProfile'
+      responses:
+        '200':
+          description: Successfully request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Instance'
+        '401':
+          description: Require authentication
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+    delete:
+      description: Delete Instance
+      operationId: deleteInstance
+      responses:
+        '200':
+          description: Successfully request
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Require authentication
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+  /instance/zones:
+    get:
+      description: List zones
+      operationId: listZones
+      responses:
+        '200':
+          description: List zones
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Zones'
+        '204':
+          description: Not content
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+        '401':
+          description: Require authentication
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+  /instance/machineTypes:
+    get:
+      description: List machine types
+      operationId: listMachineTypes
+      parameters:
+        - in: query
+          name: zone
+          required: true
+          schema:
+            type: string
+          description: Zone name
+      responses:
+        '200':
+          description: List machine types
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/MachineTypes'
+        '401':
+          description: Require authentication
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+  /instance/images:
+    get:
+      description: List images
+      operationId: listImages
+      responses:
+        '200':
+          description: List images
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/Images'
+        '401':
+          description: Require authentication
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
