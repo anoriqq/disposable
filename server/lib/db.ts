@@ -12,15 +12,18 @@ const userSchema = new mongoose.Schema<UserDocument>({
 });
 export const User = mongoose.model<UserDocument>('User', userSchema);
 
-export const setupMongoose = async (): Promise<void> => {
+export const setupMongoose = (): void => {
   if (!process.env.MONGODB_CONNECTION_STRING) {
     throw new Error('mongodb connection string is not specified');
   }
-  await mongoose.connect(process.env.MONGODB_CONNECTION_STRING, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useFindAndModify: false,
-  });
-  // eslint-disable-next-line no-console
-  console.log(`> Successfully connected to Mongodb`);
+  mongoose
+    .connect(process.env.MONGODB_CONNECTION_STRING, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      useFindAndModify: false,
+    })
+    .then(() => {
+      // eslint-disable-next-line no-console
+      console.log(`> Successfully connected to Mongodb`);
+    });
 };
