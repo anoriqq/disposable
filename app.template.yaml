@@ -5,3 +5,10 @@ env_variables:
   SESSION_SECRET: ${{SESSION_SECRET}}
   MONGODB_CONNECTION_STRING: ${{MONGODB_CONNECTION_STRING}}
   PATH_PREFIX: ${{PATH_PREFIX}}
+  DATADOG_API_KEY: ${{DATADOG_API_KEY}}
+handlers:
+  - url: /datadog
+    script: gae_datadog.datadog.app
+libraries:
+  - name: ssl
+    version: latest

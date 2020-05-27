@@ -3,6 +3,7 @@
 
 import type { Express, APIError } from 'express-serve-static-core';
 import './lib/env';
+import './lib/tracer';
 import next from 'next';
 import express, { ErrorRequestHandler } from 'express';
 import helmet from 'helmet';
@@ -92,51 +93,53 @@ const setupPassport = (server: Express): void => {
 };
 
 app.prepare().then(() => {
-  /* Create server */
-  const server = express();
+  (async (): Promise<void> => {
+    /* Create server */
+    const server = express();
 
-  /* Setup express app */
-  server.set('trust proxy', true);
+    /* Setup express app */
+    server.set('trust proxy', true);
 
-  /* Setup express middleware */
-  server.use(express.json());
-  server.use(express.urlencoded({ extended: true }));
-  server.use(helmet());
-  server.use(bodyParser.json());
-  server.use(cookieParser());
+    /* Setup express middleware */
+    server.use(express.json());
+    server.use(express.urlencoded({ extended: true }));
+    server.use(helmet());
+    server.use(bodyParser.json());
+    server.use(cookieParser());
 
-  /* Setup mongoose */
-  setupMongoose();
+    /* Setup mongoose */
+    await setupMongoose();
 
-  /* Setup passport */
-  setupPassport(server);
+    /* Setup passport */
+    setupPassport(server);
 
-  /* Setup routings */
-  server.use(healthRouter);
-  server.use(userRouter);
-  server.use(projectRouter);
-  server.use(instanceRouter);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const errorHandler: ErrorRequestHandler<any, APIError> = (
-    err,
-    req,
-    res,
-    nextFn,
-  ): void => {
-    if (err.message === 'no user') {
-      res.status(401).json({ code: 401, message: 'No user' });
-      return;
-    }
-    console.error(err);
-    nextFn(err);
-  };
-  server.use(errorHandler);
-  server.all('*', (req, res) => handle(req, res));
+    /* Setup routings */
+    server.use(healthRouter);
+    server.use(userRouter);
+    server.use(projectRouter);
+    server.use(instanceRouter);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const errorHandler: ErrorRequestHandler<any, APIError> = (
+      err,
+      req,
+      res,
+      nextFn,
+    ): void => {
+      if (err.message === 'no user') {
+        res.status(401).json({ code: 401, message: 'No user' });
+        return;
+      }
+      console.error(err);
+      nextFn(err);
+    };
+    server.use(errorHandler);
+    server.all('*', (req, res) => handle(req, res));
 
-  /* Start server */
-  server.listen(port, (err) => {
-    if (err) throw err;
-    // eslint-disable-next-line no-console
-    console.log(`> Ready on http://localhost:${port}`);
-  });
+    /* Start server */
+    server.listen(port, (err) => {
+      if (err) throw err;
+      // eslint-disable-next-line no-console
+      console.log(`> Ready on http://localhost:${port}`);
+    });
+  })().catch(console.error);
 });
