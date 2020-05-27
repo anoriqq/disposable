@@ -1,0 +1,3 @@
+[submodule "gae_datadog"]
+	path = gae_datadog
+	url = https://github.com/DataDog/gae_datadog
