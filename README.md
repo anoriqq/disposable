@@ -2,6 +2,57 @@
 
 📎Disposable GCE easily
 
+---
+
+- [English](#About)
+- [日本語](#About-1)
+
+## About
+
+This is a web application to use and discard VM instances on the Google Cloud Platform easily.
+
+This is useful when you suddenly need to use a Linux machine on the go.
+
+## Usage
+
+1. Sign in with your Google Account.
+
+   > Note: You need to set up a billing account with GCP in advance.
+
+1. Create a project according to the UI.
+
+   Only one project can be created from this application per account. If the project is awaiting deletion, it will be restored.
+
+1. Create an instance.
+
+   Required fields are `Zone`,`Machine Type`,`Image family` and `Boot disk size`.
+
+1. When you're done, delete only the project or instance.
+
+## FAQ
+
+### I want to change the configuration of my instance.
+
+You can either delete the instance you created and rebuild it, or change it directly in the cloud console.
+
+### Wouldn't you like to be charged?
+
+This service is completely free to use.  
+However, you may be charged by GCP.  
+You can use it free of charge as long as you are within the scope of [Always Free](https://cloud.google.com/free/docs/gcp-free-tier).
+
+### Is the API ever called incorrectly?
+
+Access tokens will be stored/used in strict confidence.  
+In addition, the expiration date of the access token used for the Service expires one hour after authentication.  
+We recommend deactivating the token by [revoking access to the account](https://myaccount.google.com/permissions) where appropriate.
+
+### It is hard to use.
+
+We welcome your feedback on [Issue](https://github.com/anoriqq/disposable/issues/new) and [Twitter](https://twitter.com/anoriqq)!
+
+---
+
 ## About
 
 Google Cloud Platform 上の VM インスタンスをお手軽に使い捨てる為の Web アプリです。
@@ -45,6 +96,8 @@ Google Cloud Platform 上の VM インスタンスをお手軽に使い捨てる
 ### 使いにくいです。
 
 [Issue](https://github.com/anoriqq/disposable/issues/new)や[Twitter](https://twitter.com/anoriqq)へのご意見ご感想を歓迎しています!
+
+---
 
 ## References
 
