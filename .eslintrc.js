@@ -78,5 +78,7 @@ module.exports = {
         format: ['PascalCase'],
       },
     ],
+    'react/jsx-wrap-multilines': 0,
+    'jsx-a11y/anchor-is-valid': 0,
   },
 };
