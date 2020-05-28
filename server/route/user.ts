@@ -111,13 +111,12 @@ userRouter.get(
   passport.authenticate('google', {
     scope: [
       'profile',
-      'https://www.googleapis.com/auth/cloud-platform',
-      // 'https://www.googleapis.com/auth/cloudplatformprojects',
-      // 'https://www.googleapis.com/auth/cloud-billing',
-      // 'https://www.googleapis.com/auth/cloud-platform.read-only',
-      // 'https://www.googleapis.com/auth/service.management',
-      // 'https://www.googleapis.com/auth/compute',
-      // 'https://www.googleapis.com/auth/devstorage.full_control',
+      'https://www.googleapis.com/auth/cloudplatformprojects',
+      'https://www.googleapis.com/auth/cloud-billing',
+      'https://www.googleapis.com/auth/cloud-platform.read-only',
+      'https://www.googleapis.com/auth/service.management',
+      'https://www.googleapis.com/auth/compute',
+      'https://www.googleapis.com/auth/devstorage.full_control',
     ],
   }),
 );
