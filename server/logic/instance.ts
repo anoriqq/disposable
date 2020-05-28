@@ -143,7 +143,8 @@ const getAddressWithRetry: GetAddressWithRetry = async ({
     }
     return addressInfo;
   } catch (err) {
-    console.log(err);
+    // eslint-disable-next-line no-console
+    console.error(err);
     await wait(3000);
     return getAddressWithRetry({
       projectId,

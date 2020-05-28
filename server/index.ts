@@ -127,6 +127,7 @@ app.prepare().then(() => {
       res.status(401).json({ code: 401, message: 'No user' });
       return;
     }
+    // eslint-disable-next-line no-console
     console.error(err);
     nextFn(err);
   };

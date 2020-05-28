@@ -28,7 +28,6 @@ import {
 } from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
 
-import { assert } from 'console';
 import { fetcher } from '../lib/fetch';
 import Layout from '../components/layout';
 
