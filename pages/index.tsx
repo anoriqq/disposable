@@ -28,6 +28,7 @@ import {
 } from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
 
+import { assert } from 'console';
 import { fetcher } from '../lib/fetch';
 import Layout from '../components/layout';
 
@@ -49,6 +50,7 @@ const useZones = ({
     const fetchZones = async (): Promise<void> => {
       setLoading(true);
       const zones: Zones = await (await fetch('/instance/zones')).json();
+      if (!zones.length) return;
       setResult(zones.sort((a, b) => -b.name.localeCompare(a.name)));
       setLoading(false);
     };
@@ -77,7 +79,7 @@ const useMachineTypes = ({
       const machineTypes: MachineTypes = await (
         await fetch(`/instance/machineTypes?${qs.stringify({ zone })}`)
       ).json();
-      if (!machineTypes) return;
+      if (!machineTypes.length) return;
       setResult(machineTypes.sort((a, b) => -b.name.localeCompare(a.name)));
       setLoading(false);
     };
@@ -101,6 +103,7 @@ const useImages = ({
     const fetchZones = async (): Promise<void> => {
       setLoading(true);
       const images: Images = await (await fetch('/instance/images')).json();
+      if (!images.length) return;
       setResult(images.sort((a, b) => -b.family.localeCompare(a.family)));
       setLoading(false);
     };
@@ -207,6 +210,31 @@ const InstanceStepper: React.FC<{ userInfo: UserInfo }> = ({ userInfo }) => {
 
   const handleStep = (): void => {
     setActiveStep(getStep(userInfo));
+  };
+
+  const validateInstanceInfo = (
+    dangerMachineProfile: MachineProfile,
+  ): boolean => {
+    return !(
+      zones.some(({ name, region }) => {
+        return (
+          name === dangerMachineProfile.zone &&
+          region === dangerMachineProfile.region
+        );
+      }) &&
+      machineTypes.some(({ name }) => {
+        return name === dangerMachineProfile.machineType;
+      }) &&
+      images.some(({ project, family }) => {
+        return (
+          project === dangerMachineProfile.imageProject &&
+          family === dangerMachineProfile.imageFamily
+        );
+      }) &&
+      Number(dangerMachineProfile.diskSizeGb) >= 10 &&
+      Number(dangerMachineProfile.diskSizeGb) <= 6400 &&
+      sshPublicKeyValidator(dangerMachineProfile.sshPublicKey)
+    );
   };
 
   useEffect(() => {
@@ -457,6 +485,7 @@ const InstanceStepper: React.FC<{ userInfo: UserInfo }> = ({ userInfo }) => {
                 })
                 .catch(() => setOpenBackdrop(false));
             }}
+            disabled={validateInstanceInfo(machineProfile)}
           >
             Create instance
           </Button>
