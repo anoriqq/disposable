@@ -43,7 +43,7 @@
     "helmet": "3.22.0",
     "isomorphic-unfetch": "3.0.0",
     "mongoose": "5.9.16",
-    "next": "9.4.3",
+    "next": "9.4.4",
     "passport": "0.4.1",
     "passport-google-oauth20": "2.0.0",
     "prop-types": "15.7.2",
