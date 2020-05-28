@@ -116,7 +116,6 @@ userRouter.get(
       'https://www.googleapis.com/auth/cloud-platform.read-only',
       'https://www.googleapis.com/auth/service.management',
       'https://www.googleapis.com/auth/compute',
-      'https://www.googleapis.com/auth/devstorage.full_control',
     ],
   }),
 );
