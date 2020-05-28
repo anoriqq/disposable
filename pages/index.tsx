@@ -312,7 +312,10 @@ const InstanceStepper: React.FC<{ userInfo: UserInfo }> = ({ userInfo }) => {
               />
             )}
             loading={loadingZones}
-            onChange={(e: ChangeEvent<{}>, zone: Zones[0] | null): void => {
+            onChange={(
+              e: ChangeEvent<Record<string, unknown>>,
+              zone: Zones[0] | null,
+            ): void => {
               e.preventDefault();
               if (!zone) return;
               setMachineProfile({
@@ -361,7 +364,10 @@ const InstanceStepper: React.FC<{ userInfo: UserInfo }> = ({ userInfo }) => {
               />
             )}
             loading={loadingMachineTypes}
-            onChange={(e: ChangeEvent<{}>, v: MachineTypes[0] | null): void => {
+            onChange={(
+              e: ChangeEvent<Record<string, unknown>>,
+              v: MachineTypes[0] | null,
+            ): void => {
               e.preventDefault();
               if (!v) return;
               setMachineProfile({
@@ -408,7 +414,10 @@ const InstanceStepper: React.FC<{ userInfo: UserInfo }> = ({ userInfo }) => {
               />
             )}
             loading={loadingImages}
-            onChange={(e: ChangeEvent<{}>, image: Images[0] | null): void => {
+            onChange={(
+              e: ChangeEvent<Record<string, unknown>>,
+              image: Images[0] | null,
+            ): void => {
               e.preventDefault();
               if (!image) return;
               setMachineProfile({
