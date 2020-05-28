@@ -170,7 +170,8 @@ export const getProjectServicesWithRetry: GetProjectServicesWithRetry = async ({
       throw new Error(JSON.stringify(serviceStatus, null, 2));
     return serviceStatus;
   } catch (err) {
-    console.log(err);
+    // eslint-disable-next-line no-console
+    console.error(err);
     await wait(3000);
     return getProjectServicesWithRetry({
       projectNumber,

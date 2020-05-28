@@ -143,7 +143,8 @@ const getAddressWithRetry: GetAddressWithRetry = async ({
     }
     return addressInfo;
   } catch (err) {
-    console.log(err);
+    // eslint-disable-next-line no-console
+    console.error(err);
     await wait(3000);
     return getAddressWithRetry({
       projectId,
@@ -213,12 +214,21 @@ export const getInstanceName = ({
  * Find instance
  */
 type FindInstance = (params: {
-  instances: {
-    [k: string]: compute_v1.Schema$InstancesScopedList;
-  };
+  instances:
+    | {
+        [k: string]: compute_v1.Schema$InstancesScopedList;
+      }
+    | Record<string, unknown>;
   instanceName: string;
 }) => { instance: compute_v1.Schema$Instance | undefined };
 export const findInstance: FindInstance = ({ instances, instanceName }) => {
+  if (
+    !((i): i is { [k: string]: compute_v1.Schema$InstancesScopedList } => {
+      return Boolean(Object.keys(i).length);
+    })(instances)
+  ) {
+    return { instance: undefined };
+  }
   const instance = Object.keys(instances)
     .map((zone) => {
       return instances[zone].instances;
@@ -241,7 +251,7 @@ type ListInstances = (params: {
     | {
         [k: string]: compute_v1.Schema$InstancesScopedList;
       }
-    | {};
+    | Record<string, unknown>;
 }>;
 export const listInstances: ListInstances = async ({
   projectId,

@@ -45,31 +45,38 @@ module.exports = {
       1,
       { extensions: ['.js', '.jsx', '.ts', '.tsx'] },
     ],
-    'import/prefer-default-export': 0,
     'spaced-comment': ['error', 'always', { markers: ['/'] }],
-    'no-empty-function': 0,
-    '@typescript-eslint/no-empty-function': [
-      'error',
-      { allow: ['arrowFunctions'] },
-    ],
-    'no-underscore-dangle': ['error', { allow: ['_id'] }],
-    '@typescript-eslint/camelcase': [
-      'error',
-      {
-        allow: [
-          'oauth_token',
-          'access_token',
-          'cloudresourcemanager_v1',
-          'serviceusage_v1beta1',
-          'cloudbilling_v1',
-          'compute_v1',
-        ],
-      },
-    ],
     'import/no-unresolved': [
       'error',
       { ignore: ['express-serve-static-core'] },
     ],
-    'react/prop-types': 0,
+    'import/prefer-default-export': 0,
+    'no-underscore-dangle': ['error', { allow: ['_id'] }],
+    'no-unused-vars': 'off',
+    '@typescript-eslint/no-unused-vars': ['error'],
+    camelcase: 0,
+    '@typescript-eslint/naming-convention': [
+      'error',
+      {
+        selector: 'default',
+        format: ['camelCase'],
+        leadingUnderscore: 'forbid',
+        trailingUnderscore: 'forbid',
+        filter: {
+          regex: '^(oauth_token|access_token|Content-Type|_id)$',
+          match: false,
+        },
+      },
+      {
+        selector: 'variable',
+        format: ['camelCase', 'UPPER_CASE', 'PascalCase'],
+        leadingUnderscore: 'forbid',
+        trailingUnderscore: 'forbid',
+      },
+      {
+        selector: 'typeLike',
+        format: ['PascalCase'],
+      },
+    ],
   },
 };

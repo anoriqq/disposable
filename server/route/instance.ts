@@ -72,7 +72,8 @@ instanceRouter.post('/instance', (req, res, next) => {
         sshPublicKey,
         accessToken,
       }).catch((err) => {
-        console.log({ err });
+        // eslint-disable-next-line no-console
+        console.error(err);
         throw err;
       });
       const mewInstance = await getInstanceWithRetry({
