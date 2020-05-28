@@ -27,6 +27,7 @@ import {
   Backdrop,
 } from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
+import Link from 'next/link';
 
 import { fetcher } from '../lib/fetch';
 import Layout from '../components/layout';
@@ -159,7 +160,6 @@ const sshPublicKeyValidator = (key?: string): boolean => {
 const defaultAutoCompleteProps = {
   autoComplete: true,
   autoHighlight: true,
-  autoSelect: true,
   blurOnSelect: true,
   fullWidth: true,
   includeInputInList: true,
@@ -263,6 +263,7 @@ const InstanceStepper: React.FC<{ userInfo: UserInfo }> = ({ userInfo }) => {
                 })
                 .catch(() => setOpenBackdrop(false));
             }}
+            color="primary"
           >
             {userInfo.projectLifecycleState === 'DELETE_REQUESTED'
               ? 'Undelete project'
@@ -494,6 +495,7 @@ const InstanceStepper: React.FC<{ userInfo: UserInfo }> = ({ userInfo }) => {
                 .catch(() => setOpenBackdrop(false));
             }}
             disabled={validateInstanceInfo(machineProfile)}
+            color="primary"
           >
             Create instance
           </Button>
@@ -512,6 +514,7 @@ const InstanceStepper: React.FC<{ userInfo: UserInfo }> = ({ userInfo }) => {
                 })
                 .catch(() => setOpenBackdrop(false));
             }}
+            color="secondary"
           >
             Delete project
           </Button>
@@ -557,6 +560,7 @@ const InstanceStepper: React.FC<{ userInfo: UserInfo }> = ({ userInfo }) => {
                 })
                 .catch(() => setOpenBackdrop(false));
             }}
+            color="primary"
           >
             Delete instance and return to previous
           </Button>
@@ -575,6 +579,7 @@ const InstanceStepper: React.FC<{ userInfo: UserInfo }> = ({ userInfo }) => {
                 })
                 .catch(() => setOpenBackdrop(false));
             }}
+            color="primary"
           >
             Delete project
           </Button>
@@ -605,7 +610,20 @@ const IndexView: React.FC = () => {
 
   return (
     <>
-      <Button onClick={handleLogin}>LOGIN</Button>
+      <Button onClick={handleLogin} fullWidth color="primary">
+        LOGIN
+      </Button>
+      <span>
+        {'By clicking “LOGIN”, you agree to our '}
+        <Link href="/terms">
+          <a>Terms of Service</a>
+        </Link>
+        {' and '}
+        <Link href="/privacy">
+          <a>Privacy Statement</a>
+        </Link>
+        .
+      </span>
     </>
   );
 };
@@ -624,7 +642,9 @@ const UserView: React.FC = () => {
     <>
       <div>
         <span>{`ACCOUNT: ${userInfo?.displayName || 'Guest'}`}</span>
-        <Button onClick={handleLogout}>LOGOUT</Button>
+        <Button onClick={handleLogout} color="secondary">
+          LOGOUT
+        </Button>
       </div>
       {userInfo && <InstanceStepper userInfo={userInfo} />}
     </>
