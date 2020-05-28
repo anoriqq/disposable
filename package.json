@@ -99,7 +99,7 @@
     "prettier-package-json": "2.1.3",
     "react-test-renderer": "16.13.1",
     "rimraf": "3.0.2",
-    "ts-jest": "25.5.1",
+    "ts-jest": "26.0.0",
     "ts-node": "8.10.1",
     "typed-oax": "0.0.4",
     "typescript": "3.9.3",
