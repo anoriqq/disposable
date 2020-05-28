@@ -620,7 +620,7 @@ const IndexView: React.FC = () => {
         </Link>
         {' and '}
         <Link href="/privacy">
-          <a>Privacy Statement</a>
+          <a>Privacy Privacy</a>
         </Link>
         .
       </span>
