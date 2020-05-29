@@ -600,19 +600,12 @@ const InstanceStepper: React.FC<{ userInfo: UserInfo }> = ({ userInfo }) => {
   );
 };
 
-const IndexView: React.FC = () => {
-  const handleLogin = (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-  ): void => {
-    e.preventDefault();
-    window.location.href = '/user/auth';
-  };
-
-  return (
-    <>
-      <Button onClick={handleLogin} fullWidth color="primary">
-        LOGIN
-      </Button>
+const IndexView: React.FC = () => (
+  <>
+    <a href="/user/auth">
+      <img src="/btn_google_signin_light_normal_web.png" alt="login" />
+    </a>
+    <div style={{ margin: '0 10px' }}>
       <span>
         {'By clicking “LOGIN”, you agree to our '}
         <Link href="/terms">
@@ -624,9 +617,9 @@ const IndexView: React.FC = () => {
         </Link>
         .
       </span>
-    </>
-  );
-};
+    </div>
+  </>
+);
 
 const UserView: React.FC = () => {
   const { data: userInfo, revalidate } = useUser();
