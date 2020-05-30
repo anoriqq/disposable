@@ -8,7 +8,7 @@
 <img
     src="https://github.com/anoriqq/disposable/blob/master/public/disposable-demo.gif?raw=true"
     alt="disposable demo"
-    width="640"
+    width="680"
     height="auto"
     border="1"
   />
