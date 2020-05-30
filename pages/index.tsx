@@ -28,6 +28,9 @@ import {
 } from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
 import Link from 'next/link';
+import { GetStaticProps, InferGetStaticPropsType } from 'next';
+import ReactMarkdown from 'react-markdown/with-html';
+import matter from 'gray-matter';
 
 import { fetcher } from '../lib/fetch';
 import Layout from '../components/layout';
@@ -600,7 +603,7 @@ const InstanceStepper: React.FC<{ userInfo: UserInfo }> = ({ userInfo }) => {
   );
 };
 
-const IndexView: React.FC = () => (
+const IndexView: React.FC<{ markdownBody: string }> = ({ markdownBody }) => (
   <>
     <a href="/user/auth">
       <img src="/btn_google_signin_light_normal_web.png" alt="login" />
@@ -617,6 +620,9 @@ const IndexView: React.FC = () => (
         </Link>
         .
       </span>
+    </div>
+    <div>
+      <ReactMarkdown source={markdownBody} escapeHtml={false} />
     </div>
   </>
 );
@@ -644,11 +650,30 @@ const UserView: React.FC = () => {
   );
 };
 
-const DashBoard: React.FC = () => {
+export const getStaticProps: GetStaticProps<{
+  markdownBody: string;
+}> = async () => {
+  const { content } = matter((await import('../README.md')).default);
+  return {
+    props: {
+      markdownBody: content,
+    },
+  };
+};
+
+const DashBoard: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
+  markdownBody,
+}) => {
   const { data: userInfo } = useUser();
 
   return (
-    <Layout>{userInfo?.displayName ? <UserView /> : <IndexView />}</Layout>
+    <Layout>
+      {userInfo?.displayName ? (
+        <UserView />
+      ) : (
+        <IndexView markdownBody={markdownBody} />
+      )}
+    </Layout>
   );
 };
 

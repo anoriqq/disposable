@@ -9,17 +9,17 @@
     src="https://github.com/anoriqq/disposable/blob/master/public/disposable-demo.gif?raw=true"
     alt="disposable demo"
     width="640"
-    height="360"
+    height="auto"
     border="1"
   />
 </a>
 
 ---
 
-- [English](#About)
-- [日本語](#About-1)
+- [English](#about-en)
+- [日本語](#about-ja)
 
-## About
+<h2 id="about-en">About</h2>
 
 This is a web application to use and discard VM instances on the Google Cloud Platform easily.
 
@@ -65,7 +65,7 @@ We welcome your feedback on [Issue](https://github.com/anoriqq/disposable/issues
 
 ---
 
-## About
+<h2 id="about-ja">About</h2>
 
 Google Cloud Platform 上の VM インスタンスをお手軽に使い捨てる為の Web アプリです。
 
