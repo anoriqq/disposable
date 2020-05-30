@@ -14,7 +14,7 @@ const globalStyles = css`
 
 const Container = styled.div({
   margin: '2rem auto',
-  maxWidth: '550px',
+  maxWidth: '680px',
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
