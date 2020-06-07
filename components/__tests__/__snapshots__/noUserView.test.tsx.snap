@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`UserView 1`] = `
+exports[`UserView Snapshot 1`] = `
 Array [
   <a
     href="/user/auth"
