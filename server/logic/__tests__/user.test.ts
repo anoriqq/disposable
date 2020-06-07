@@ -27,7 +27,7 @@ describe('User', () => {
     mongoose.disconnect();
   });
 
-  it('Delete user', async () => {
+  test('Delete user', async () => {
     deleteUser({ userId: 1234 });
 
     const user = await User.findById(1234).exec();
