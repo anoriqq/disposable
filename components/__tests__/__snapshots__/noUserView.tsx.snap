@@ -1,0 +1,46 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`UserView 1`] = `
+Array [
+  <a
+    href="/user/auth"
+  >
+    <img
+      alt="login"
+      src="/btn_google_signin_light_normal_web.png"
+    />
+  </a>,
+  <div
+    style={
+      Object {
+        "margin": "0 10px",
+      }
+    }
+  >
+    <span>
+      By clicking “Sign in", you agree to our 
+      <a
+        href="/terms"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+      >
+        Terms of Service
+      </a>
+       and 
+      <a
+        href="/privacy"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+      >
+        Privacy Policy
+      </a>
+      .
+    </span>
+  </div>,
+  <div>
+    <h1>
+      README
+    </h1>
+  </div>,
+]
+`;
