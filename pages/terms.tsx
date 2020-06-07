@@ -6,6 +6,7 @@ import Layout from 'components/layout';
 const TermsPage: React.FC = () => (
   <Layout>
     <div>
+      <h2>利用規約</h2>
       <div>
         サービス提供者はサービス利用者のプライバシー情報と個人情報を、プライバシーポリシーに従って適切に取り扱います。
       </div>
@@ -23,6 +24,30 @@ const TermsPage: React.FC = () => (
       </div>
       <div>サービス提供者は本規約を更新することがあります。</div>
       <div>本規約は日本語を正文とし、その準拠法は日本法とします。</div>
+      <h2>Terms of service</h2>
+      <div>
+        Service Providers will handle the privacy information and personal
+        information of Service Users appropriately in accordance with the
+        Privacy Policy.
+      </div>
+      <div>Service Users must agree to these Terms and the Privacy Policy.</div>
+      <div>
+        Service Users shall use The Service at their own risk, and shall be
+        responsible for any and all actions taken on The Service and the results
+        thereof.
+      </div>
+      <div>
+        Service Providers are not obligated to provide the Service to Service
+        Users.
+      </div>
+      <div>
+        Service Provider shall not be responsible for any damages caused to
+        Service Users due to the Service.
+      </div>
+      <div>
+        Service Provider may update these Terms of Use from time to time.
+      </div>
+      <div>These Terms and Conditions shall be governed by Japanese law.</div>
     </div>
     <Link href="/">
       <a>HOME</a>

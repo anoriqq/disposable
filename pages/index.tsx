@@ -610,13 +610,13 @@ const IndexView: React.FC<{ markdownBody: string }> = ({ markdownBody }) => (
     </a>
     <div style={{ margin: '0 10px' }}>
       <span>
-        {'By clicking “LOGIN”, you agree to our '}
+        {'By clicking “Sign in", you agree to our '}
         <Link href="/terms">
           <a>Terms of Service</a>
         </Link>
         {' and '}
         <Link href="/privacy">
-          <a>Privacy Privacy</a>
+          <a>Privacy Policy</a>
         </Link>
         .
       </span>
