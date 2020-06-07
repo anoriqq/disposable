@@ -97,6 +97,7 @@
     "jest": "26.0.1",
     "kill-port": "1.6.0",
     "lint-staged": "10.2.9",
+    "mongo-unit": "2.0.1",
     "nodemon": "2.0.4",
     "prettier": "2.0.5",
     "prettier-package-json": "2.1.3",
