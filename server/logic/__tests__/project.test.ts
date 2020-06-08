@@ -5,28 +5,54 @@ import {
   getProjectId,
   listProjects,
   hasProject,
+  getProjectWithRetry,
 } from '../project';
 
-jest.mock('googleapis', () => {
-  return {
-    __esModule: true,
-    google: {
-      cloudresourcemanager: jest.fn().mockReturnValue({
-        projects: {
-          list: jest.fn().mockReturnValue(
+jest.mock('googleapis', () => ({
+  __esModule: true,
+  google: {
+    cloudresourcemanager: jest.fn().mockReturnValue({
+      projects: {
+        list: jest.fn().mockReturnValue(
+          Promise.resolve({
+            data: {
+              projects: [{ name: 'project-name', projectId: 'project-id' }],
+            },
+          }),
+        ),
+        get: jest
+          .fn()
+          .mockReturnValueOnce(
             Promise.resolve({
-              data: {
-                projects: [{ name: 'project-name', projectId: 'project-id' }],
-              },
+              data: { name: 'project-name', projectId: 'project-id' },
+            }),
+          )
+          .mockReturnValueOnce(
+            Promise.resolve({
+              data: {},
+            }),
+          )
+          .mockReturnValueOnce(
+            Promise.resolve({
+              data: {},
+            }),
+          )
+          .mockReturnValueOnce(
+            Promise.resolve({
+              data: {},
+            }),
+          )
+          .mockReturnValue(
+            Promise.resolve({
+              data: { name: 'project-name', projectId: 'project-id' },
             }),
           ),
-        },
-      }),
-      serviceusage: jest.fn().mockReturnValue({}),
-      cloudbilling: jest.fn().mockReturnValue({}),
-    },
-  };
-});
+      },
+    }),
+    serviceusage: jest.fn().mockReturnValue({}),
+    cloudbilling: jest.fn().mockReturnValue({}),
+  },
+}));
 
 describe('Project logic', () => {
   describe('Get project name', () => {
@@ -47,9 +73,8 @@ describe('Project logic', () => {
 
   describe('List projects', () => {
     it('return projects', async () => {
-      const projects = await (
-        await listProjects({ accessToken: 'access_token' })
-      )?.data?.projects;
+      const projects = (await listProjects({ accessToken: 'access_token' }))
+        ?.data?.projects;
 
       expect(projects?.length).toEqual(1);
 
@@ -92,7 +117,41 @@ describe('Project logic', () => {
   });
 
   describe('Get project with retry', () => {
-    it.todo('Return project');
+    it('Return project', async () => {
+      const project = await getProjectWithRetry({
+        projectId: 'project-id',
+        accessToken: 'access_token',
+        retry: 0,
+      });
+
+      expect(project.projectId).toEqual('project-id');
+    });
+
+    it('Return empty project', async () => {
+      const getProjectWithRetryPromise = getProjectWithRetry({
+        projectId: 'project-id',
+        accessToken: 'access_token',
+        retry: 0,
+      });
+
+      await expect(getProjectWithRetryPromise).rejects.toThrow(
+        'not found project',
+      );
+    });
+
+    it(
+      'Retry',
+      async () => {
+        const project = await getProjectWithRetry({
+          projectId: 'project-id',
+          accessToken: 'access_token',
+          retry: 2,
+        });
+
+        expect(project.projectId).toEqual('project-id');
+      },
+      3000 * 2 + 1000,
+    );
   });
 
   describe('Create project', () => {
