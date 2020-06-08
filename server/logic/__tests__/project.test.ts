@@ -6,6 +6,7 @@ import {
   listProjects,
   hasProject,
   getProjectWithRetry,
+  createProject,
 } from '../project';
 
 jest.mock('googleapis', () => ({
@@ -46,6 +47,11 @@ jest.mock('googleapis', () => ({
             Promise.resolve({
               data: { name: 'project-name', projectId: 'project-id' },
             }),
+          ),
+        create: jest
+          .fn()
+          .mockReturnValue(
+            Promise.resolve({ data: { name: 'create project operation' } }),
           ),
       },
     }),
@@ -155,7 +161,15 @@ describe('Project logic', () => {
   });
 
   describe('Create project', () => {
-    it.todo('Return operation');
+    it('Return operation', async () => {
+      const { data: operation } = await createProject({
+        projectId: 'project-id',
+        projectName: 'project-name',
+        accessToken: 'access_token',
+      });
+
+      expect(operation.name).toEqual('create project operation');
+    });
   });
 
   describe('Format project info', () => {
