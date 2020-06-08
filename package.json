@@ -18,7 +18,7 @@
     "oax": "oax generate ./openapi.yaml -d ./server/@types/express",
     "oax:watch": "yarn oax -w",
     "start": "cross-env NODE_ENV='production' node ./dist/index.js",
-    "test": "jest",
+    "test": "cross-env NODE_ENV=test jest",
     "test:ci": "jest --ci --coverage --passWithNoTests",
     "test:coverage": "jest --coverage",
     "type-check": "tsc --noEmit --pretty"
@@ -97,6 +97,7 @@
     "jest": "26.0.1",
     "kill-port": "1.6.0",
     "lint-staged": "10.2.9",
+    "mongo-unit": "2.0.1",
     "nodemon": "2.0.4",
     "prettier": "2.0.5",
     "prettier-package-json": "2.1.3",
@@ -122,8 +123,11 @@
     "package.json": [
       "prettier-package-json --write"
     ],
-    "*.{js,jsx,ts,tsx}": [
+    "!(*.test).{js,jsx,ts,tsx}": [
       "eslint --fix --plugin tsc --rule 'tsc/config: [2, {configFile: \"tsconfig.json\"}]'",
+      "cross-env NODE_ENV=test jest --bail --findRelatedTests"
+    ],
+    "*.test.{js,jsx,ts,tsx}": [
       "cross-env NODE_ENV=test jest --bail --findRelatedTests"
     ],
     "*.{json,md,html,css}": [

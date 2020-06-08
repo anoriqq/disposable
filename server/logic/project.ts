@@ -68,7 +68,7 @@ type GetProjectWithRetry = (params: {
   projectId: string;
   accessToken: string;
   retry: number;
-}) => GaxiosPromise<cloudresourcemanager_v1.Schema$Project>;
+}) => Promise<cloudresourcemanager_v1.Schema$Project>;
 export const getProjectWithRetry: GetProjectWithRetry = async ({
   projectId,
   accessToken,
@@ -81,7 +81,9 @@ export const getProjectWithRetry: GetProjectWithRetry = async ({
       projectId,
       access_token: accessToken,
     };
-    return cloudresourcemanager.projects.get(request);
+    const { data: project } = await cloudresourcemanager.projects.get(request);
+    if (!project.projectId) throw new Error(JSON.stringify(project, null, 2));
+    return project;
   } catch (err) {
     await wait(3000);
     return getProjectWithRetry({

@@ -63,7 +63,7 @@ module.exports = {
         leadingUnderscore: 'forbid',
         trailingUnderscore: 'forbid',
         filter: {
-          regex: '^(oauth_token|access_token|Content-Type|_id)$',
+          regex: '^(oauth_token|access_token|Content-Type|_id|__esModule)$',
           match: false,
         },
       },
