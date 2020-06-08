@@ -28,7 +28,7 @@ projectRouter.get('/project', (req, res, next) => {
     const accessToken = req.user?.accessToken;
     if (!userId || !accessToken) throw new Error('no user');
     const projectId = getProjectId({ userId });
-    const { data: project } = await getProjectWithRetry({
+    const project = await getProjectWithRetry({
       projectId,
       accessToken,
       retry: 10,
@@ -60,7 +60,7 @@ projectRouter.post('/project', (req, res, next) => {
         accessToken,
       });
     }
-    const { data: project } = await getProjectWithRetry({
+    const project = await getProjectWithRetry({
       projectId,
       accessToken,
       retry: 10,
@@ -111,7 +111,7 @@ projectRouter.post('/project', (req, res, next) => {
       });
     }
     /* Reacquisition project */
-    const { data: setCompletedProject } = await getProjectWithRetry({
+    const setCompletedProject = await getProjectWithRetry({
       projectId,
       accessToken,
       retry: 10,

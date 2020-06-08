@@ -24,7 +24,7 @@ userRouter.get('/user', (req, res, next) => {
       return;
     }
     const projectId = getProjectId({ userId });
-    const { data: project } = await getProjectWithRetry({
+    const project = await getProjectWithRetry({
       projectId,
       accessToken,
       retry: 1,
