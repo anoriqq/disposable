@@ -1,4 +1,11 @@
-import { getProjectName, getProjectId, listProjects } from '../project';
+import type { cloudresourcemanager_v1 } from 'googleapis';
+
+import {
+  getProjectName,
+  getProjectId,
+  listProjects,
+  hasProject,
+} from '../project';
 
 jest.mock('googleapis', () => {
   return {
@@ -40,17 +47,48 @@ describe('Project logic', () => {
 
   describe('List projects', () => {
     it('return projects', async () => {
-      const projects = await listProjects({ accessToken: 'access_token' });
+      const projects = await (
+        await listProjects({ accessToken: 'access_token' })
+      )?.data?.projects;
 
-      expect(projects.data.projects.length).toEqual(1);
-      expect(projects.data.projects[0].name).toEqual('project-name');
-      expect(projects.data.projects[0].projectId).toEqual('project-id');
+      expect(projects?.length).toEqual(1);
+
+      const project = projects?.length && projects[0];
+
+      expect(project?.name).toEqual('project-name');
+      expect(project?.projectId).toEqual('project-id');
     });
   });
 
   describe('HasProject', () => {
-    it.todo('Return true');
-    it.todo('Return false');
+    const projectId = 'project-id';
+
+    it('Return true if it contains a project', () => {
+      const projects = [{ projectId: 'project-id' }];
+      const result = hasProject({ projects, projectId });
+
+      expect(result).toBe(true);
+    });
+
+    it('Return true if it does not include a project', () => {
+      const projects = [{ projectId: 'other-project-id' }];
+      const result = hasProject({ projects, projectId });
+
+      expect(result).toBe(false);
+    });
+
+    it('Return false if empty projects', () => {
+      const emptyProjects: cloudresourcemanager_v1.Schema$Project[] = [];
+      const result = hasProject({ projects: emptyProjects, projectId });
+
+      expect(result).toBe(false);
+    });
+
+    it('Return false if was not pass over projects', () => {
+      const result = hasProject({ projectId });
+
+      expect(result).toBe(false);
+    });
   });
 
   describe('Get project with retry', () => {
