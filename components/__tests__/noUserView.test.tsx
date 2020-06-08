@@ -4,7 +4,7 @@ import renderer from 'react-test-renderer';
 import NoUserView from '../noUserView';
 
 describe('UserView', () => {
-  test('Snapshot', () => {
+  it('Snapshot', () => {
     const markdownBody = '# README';
     const tree = renderer
       .create(<NoUserView markdownBody={markdownBody} />)
