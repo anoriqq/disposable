@@ -68,7 +68,7 @@
     "@types/express-session": "1.17.0",
     "@types/helmet": "0.0.47",
     "@types/jest": "25.2.3",
-    "@types/mongoose": "5.7.28",
+    "@types/mongoose": "5.7.29",
     "@types/node": "13.13.12",
     "@types/passport": "1.0.3",
     "@types/passport-google-oauth20": "2.0.3",
