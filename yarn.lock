@@ -1174,34 +1174,34 @@
   resolved "https://registry.yarnpkg.com/@emotion/weak-memoize/-/weak-memoize-0.2.5.tgz#8eed982e2ee6f7f4e44c253e12962980791efd46"
   integrity sha512-6U71C2Wp7r5XtFtQzYrW5iKFT67OixrSxjI4MptCHzdSVlgabczzqLe0ZSgnub/5Kp4hSbpDB1tMytZY9pwxxA==
 
-"@google-cloud/common@^2.3.0":
-  version "2.4.0"
-  resolved "https://registry.yarnpkg.com/@google-cloud/common/-/common-2.4.0.tgz#2783b7de8435024a31453510f2dab5a6a91a4c82"
-  integrity sha512-zWFjBS35eI9leAHhjfeOYlK5Plcuj/77EzstnrJIZbKgF/nkqjcQuGiMCpzCwOfPyUbz8ZaEOYgbHa759AKbjg==
+"@google-cloud/common@^3.0.0":
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/@google-cloud/common/-/common-3.2.0.tgz#c57f8c68211a5211dea884d558bf3585047324ec"
+  integrity sha512-rNszQZBkzK9ZON9s8OFEVbD6zuTyGQ9ZLL5P1pakzE5qSCyZqkdNl3S2NBsUzlMUpIwJK97wCXcXgjtIFrfvMw==
   dependencies:
-    "@google-cloud/projectify" "^1.0.0"
-    "@google-cloud/promisify" "^1.0.0"
-    arrify "^2.0.0"
-    duplexify "^3.6.0"
+    "@google-cloud/projectify" "^2.0.0"
+    "@google-cloud/promisify" "^2.0.0"
+    arrify "^2.0.1"
+    duplexify "^4.1.1"
     ent "^2.2.0"
     extend "^3.0.2"
-    google-auth-library "^5.5.0"
-    retry-request "^4.0.0"
-    teeny-request "^6.0.0"
+    google-auth-library "^6.0.0"
+    retry-request "^4.1.1"
+    teeny-request "^7.0.0"
 
-"@google-cloud/compute@1.2.0":
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/@google-cloud/compute/-/compute-1.2.0.tgz#c6539aa99ef93c055d42c92a69772cd630ef5602"
-  integrity sha512-ugD+LUzlqZN8tOTEaf5rpzLqXVn2TFtxMB+O7Whu259qMhWbMqAyxpAZ34Bs7Q9b4WjbJGeqzUJQ5jmBtA9wbg==
+"@google-cloud/compute@2.0.1":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@google-cloud/compute/-/compute-2.0.1.tgz#6e4fca765a1e0c4a55d9bd6a1c9fcc8d6ba3a2bb"
+  integrity sha512-LfdhmkFtH8/BGcAnU/eOE+JNb1zy36AlBkNV4qcwesmiElQnkus7UYNpUhvifM9MEEryzVQGTPbSSdUhs+OVuw==
   dependencies:
-    "@google-cloud/common" "^2.3.0"
-    "@google-cloud/paginator" "^2.0.0"
-    "@google-cloud/projectify" "^1.0.0"
-    "@google-cloud/promisify" "^1.0.0"
+    "@google-cloud/common" "^3.0.0"
+    "@google-cloud/paginator" "^3.0.0"
+    "@google-cloud/projectify" "^2.0.0"
+    "@google-cloud/promisify" "^2.0.0"
     arrify "^2.0.0"
     async "^3.0.0"
     extend "^3.0.2"
-    gce-images "^2.0.0"
+    gce-images "^3.0.0"
     is "^3.2.1"
     string-format-obj "^1.1.1"
 
@@ -1221,23 +1221,23 @@
     readable-stream "^3.4.0"
     through2 "^3.0.0"
 
-"@google-cloud/paginator@^2.0.0":
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/@google-cloud/paginator/-/paginator-2.0.3.tgz#c7987ad05d1c3ebcef554381be80e9e8da4e4882"
-  integrity sha512-kp/pkb2p/p0d8/SKUu4mOq8+HGwF8NPzHWkj+VKrIPQPyMRw8deZtrO/OcSiy9C/7bpfU5Txah5ltUNfPkgEXg==
+"@google-cloud/paginator@^3.0.0":
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/@google-cloud/paginator/-/paginator-3.0.1.tgz#401fa7d2bcd05f760e97942b0297e412bca2c800"
+  integrity sha512-ykqRmHRg6rcIZTE+JjUMNBKOQ8uvmbVrhY//lTxZgf5QBPbZW3PoN7VK+D43yCaRJJjRmmWsaG5YdxLR6h0n0A==
   dependencies:
     arrify "^2.0.0"
     extend "^3.0.2"
 
-"@google-cloud/projectify@^1.0.0":
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/@google-cloud/projectify/-/projectify-1.0.4.tgz#28daabebba6579ed998edcadf1a8f3be17f3b5f0"
-  integrity sha512-ZdzQUN02eRsmTKfBj9FDL0KNDIFNjBn/d6tHQmA/+FImH5DO6ZV8E7FzxMgAUiVAUq41RFAkb25p1oHOZ8psfg==
+"@google-cloud/projectify@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@google-cloud/projectify/-/projectify-2.0.0.tgz#0cf938ff97520c238e7279f8e3de3b04e63fff0b"
+  integrity sha512-7wZ+m4N3Imtb5afOPfqNFyj9cKrlfVQ+t5YRxLS7tUpn8Pn/i7QuVubZRTXllaWjO4T5t/gm/r2x7oy5ajjvFQ==
 
-"@google-cloud/promisify@^1.0.0":
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/@google-cloud/promisify/-/promisify-1.0.4.tgz#ce86ffa94f9cfafa2e68f7b3e4a7fad194189723"
-  integrity sha512-VccZDcOql77obTnFh0TbNED/6ZbbmHDf8UMNnzO1d5g9V0Htfm4k5cllY8P1tJsRKC3zWYGRLaViiupcgVjBoQ==
+"@google-cloud/promisify@^2.0.0":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@google-cloud/promisify/-/promisify-2.0.1.tgz#79f722463a5779197267c6870362b1d7927081f7"
+  integrity sha512-82EQzwrNauw1fkbUSr3f+50Bcq7g4h0XvLOk8C5e9ABkXYHei7ZPi9tiMMD7Vh3SfcdH97d1ibJ3KBWp2o1J+w==
 
 "@grpc/grpc-js@~1.0.3":
   version "1.0.5"
@@ -2573,7 +2573,7 @@ array.prototype.flatmap@^1.2.3:
     es-abstract "^1.17.0-next.1"
     function-bind "^1.1.1"
 
-arrify@^2.0.0:
+arrify@^2.0.0, arrify@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/arrify/-/arrify-2.0.1.tgz#c9655e9331e0abcd588d2a7cad7e9956f66701fa"
   integrity sha512-3duEwti880xqi4eAMN8AyR4a0ByT90zoYdLlevfrvU43vb0YZwZVfxOgxWrLXXXpyugL0hNZc9G6BiB5B3nUug==
@@ -4412,6 +4412,16 @@ duplexify@^3.4.2, duplexify@^3.6.0:
     readable-stream "^2.0.0"
     stream-shift "^1.0.0"
 
+duplexify@^4.1.1:
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/duplexify/-/duplexify-4.1.1.tgz#7027dc374f157b122a8ae08c2d3ea4d2d953aa61"
+  integrity sha512-DY3xVEmVHTv1wSzKNbwoU6nVjzI369Y6sPoqfYr0/xlx3IdX2n94xIszTcjPO8W8ZIv0Wb0PXNcjuZyT4wiICA==
+  dependencies:
+    end-of-stream "^1.4.1"
+    inherits "^2.0.3"
+    readable-stream "^3.1.1"
+    stream-shift "^1.0.0"
+
 ecc-jsbn@~0.1.1:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/ecc-jsbn/-/ecc-jsbn-0.1.2.tgz#3a83a904e54353287874c564b7549386849a98c9"
@@ -5430,13 +5440,21 @@ gaxios@^3.0.0:
     is-stream "^2.0.0"
     node-fetch "^2.3.0"
 
-gce-images@2.1.4, gce-images@^2.0.0:
+gce-images@2.1.4:
   version "2.1.4"
   resolved "https://registry.yarnpkg.com/gce-images/-/gce-images-2.1.4.tgz#00ff010797a949657266836877d9ff372f75f42a"
   integrity sha512-5UQUotsEXJvllt0P+rh4V69ORuAoYIgMixKfmDx6qfyMASD/XCnal1Isak1GXi65k4KlYcUUemGGwttt3e80rg==
   dependencies:
     arrify "^2.0.0"
     google-auth-library "^5.0.0"
+
+gce-images@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/gce-images/-/gce-images-3.0.0.tgz#1fb5e6bf675c56517a0347e81115cb551c163f0a"
+  integrity sha512-MiqBZhDIJge+LHPE3fDME8/jc+G7UFg0YrFUPHzc/c6LlmS6s5xwWoV+cD4SGe8/BGgMhr34gQ5OtJFV9pZ9jg==
+  dependencies:
+    arrify "^2.0.0"
+    google-auth-library "^6.0.0"
 
 gcp-metadata@^3.4.0:
   version "3.5.0"
@@ -5576,7 +5594,7 @@ globrex@^0.1.1:
   resolved "https://registry.yarnpkg.com/globrex/-/globrex-0.1.2.tgz#dd5d9ec826232730cd6793a5e33a9302985e6098"
   integrity sha512-uHJgbwAMwNFf5mLst7IWLNg14x1CkeqglJb/K3doi4dw6q2IvAAmM/Y81kevy83wP+Sst+nutFTYOGg3d1lsxg==
 
-google-auth-library@^5.0.0, google-auth-library@^5.5.0:
+google-auth-library@^5.0.0:
   version "5.10.1"
   resolved "https://registry.yarnpkg.com/google-auth-library/-/google-auth-library-5.10.1.tgz#504ec75487ad140e68dd577c21affa363c87ddff"
   integrity sha512-rOlaok5vlpV9rSiUu5EpR0vVpc+PhN62oF4RyX/6++DG1VsaulAFEMlDYBLjJDDPI6OcNOCGAKy9UVB/3NIDXg==
@@ -10007,7 +10025,7 @@ ret@~0.1.10:
   resolved "https://registry.yarnpkg.com/ret/-/ret-0.1.15.tgz#b8a4825d5bdb1fc3f6f53c2bc33f81388681c7bc"
   integrity sha512-TTlYpa+OL+vMMNG24xSlQGEJ3B/RzEfUlLct7b5G/ytav+wPrplCpVMFuwzXbkecJrb6IYo1iFb0S9v37754mg==
 
-retry-request@^4.0.0:
+retry-request@^4.0.0, retry-request@^4.1.1:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/retry-request/-/retry-request-4.1.1.tgz#f676d0db0de7a6f122c048626ce7ce12101d2bd8"
   integrity sha512-BINDzVtLI2BDukjWmjAIRZ0oglnCAkpP2vQjM3jdLhmT62h0xnQgciPwBRDAvHqpkPT2Wo1XuUyLyn6nbGrZQQ==
@@ -10977,16 +10995,16 @@ tar-stream@^2.1.1:
     inherits "^2.0.3"
     readable-stream "^3.1.1"
 
-teeny-request@^6.0.0:
-  version "6.0.3"
-  resolved "https://registry.yarnpkg.com/teeny-request/-/teeny-request-6.0.3.tgz#b617f9d5b7ba95c76a3f257f6ba2342b70228b1f"
-  integrity sha512-TZG/dfd2r6yeji19es1cUIwAlVD8y+/svB1kAC2Y0bjEyysrfbO8EZvJBRwIE6WkwmUoB7uvWLwTIhJbMXZ1Dw==
+teeny-request@^7.0.0:
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/teeny-request/-/teeny-request-7.0.0.tgz#0e5c090bd9102ed559ffc8c9ddb00fbe1256db30"
+  integrity sha512-kWD3sdGmIix6w7c8ZdVKxWq+3YwVPGWz+Mq0wRZXayEKY/YHb63b8uphfBzcFDmyq8frD9+UTc3wLyOhltRbtg==
   dependencies:
     http-proxy-agent "^4.0.0"
     https-proxy-agent "^5.0.0"
     node-fetch "^2.2.0"
     stream-events "^1.0.5"
-    uuid "^7.0.0"
+    uuid "^8.0.0"
 
 term-size@^2.1.0:
   version "2.2.0"
@@ -11672,7 +11690,7 @@ uuid@^3.3.2:
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.4.0.tgz#b23e4358afa8a202fe7a100af1f5f883f02007ee"
   integrity sha512-HjSDRw6gZE5JMggctHBcjVak08+KEVhSIiDzFnT9S9aegmp85S/bReBVTb4QTFaRNptJ9kuYaNhnbNEOkbKb/A==
 
-uuid@^7.0.0, uuid@^7.0.2, uuid@^7.0.3:
+uuid@^7.0.2, uuid@^7.0.3:
   version "7.0.3"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-7.0.3.tgz#c5c9f2c8cf25dc0a372c4df1441c41f5bd0c680b"
   integrity sha512-DPSke0pXhTZgoF/d+WSt2QaKMCFSfx7QegxEWT+JOuHF5aWrKEn0G+ztjuJg/gG8/ItK+rbPCD/yNv8yyih6Cg==
