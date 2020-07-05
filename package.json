@@ -61,7 +61,7 @@
     "@babel/core": "7.10.4",
     "@babel/preset-typescript": "7.10.4",
     "@testing-library/jest-dom": "5.11.0",
-    "@testing-library/react": "10.4.3",
+    "@testing-library/react": "10.4.4",
     "@types/cookie-parser": "1.4.2",
     "@types/dotenv": "8.2.0",
     "@types/express": "4.17.6",
