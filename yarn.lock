@@ -5481,7 +5481,15 @@ gaxios@^3.0.0:
     is-stream "^2.0.0"
     node-fetch "^2.3.0"
 
-gce-images@2.1.4, gce-images@^2.0.0:
+gce-images@3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/gce-images/-/gce-images-3.0.0.tgz#1fb5e6bf675c56517a0347e81115cb551c163f0a"
+  integrity sha512-MiqBZhDIJge+LHPE3fDME8/jc+G7UFg0YrFUPHzc/c6LlmS6s5xwWoV+cD4SGe8/BGgMhr34gQ5OtJFV9pZ9jg==
+  dependencies:
+    arrify "^2.0.0"
+    google-auth-library "^6.0.0"
+
+gce-images@^2.0.0:
   version "2.1.4"
   resolved "https://registry.yarnpkg.com/gce-images/-/gce-images-2.1.4.tgz#00ff010797a949657266836877d9ff372f75f42a"
   integrity sha512-5UQUotsEXJvllt0P+rh4V69ORuAoYIgMixKfmDx6qfyMASD/XCnal1Isak1GXi65k4KlYcUUemGGwttt3e80rg==
