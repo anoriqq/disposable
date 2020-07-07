@@ -39,7 +39,7 @@
     "express": "4.17.1",
     "express-session": "1.17.1",
     "gce-images": "2.1.4",
-    "googleapis": "51.0.0",
+    "googleapis": "52.1.0",
     "gray-matter": "4.0.2",
     "helmet": "3.23.3",
     "isomorphic-unfetch": "3.0.0",
